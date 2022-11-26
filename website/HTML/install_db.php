@@ -14,7 +14,7 @@
 			CREATE DATABASE $base;
 			USE $base;
 			CREATE TABLE INGREDIENTS(
-				id_ingredient INT PRIMARY KEY,
+				id_ingredient INT PRIMARY KEY AUTO_INCREMENT,
 				nom_ingredient VARCHAR(2000)
 			);
 			CREATE TABLE RECETTES(
@@ -27,7 +27,7 @@
 				id_recette INT,
 				id_ingredient INT,
 				FOREIGN KEY (id_recette) REFERENCES RECETTES(id_recette),
-				FOREIGN KEY (id_ingredient) REFERENCES RECETTES(id_ingredient)
+				FOREIGN KEY (id_ingredient) REFERENCES INGREDIENTS(id_ingredient)
 			);";
 
 		//DEBUG
@@ -59,6 +59,22 @@
 			//DEBUG
 			//echo $Sql."</br>";
 			query($link, $Sql);
+
+			// Harder values
+			// -> index values
+			foreach($value['index'] as $keyindex => $valueindex){
+				// -- Ingredients table -- //
+				$query = "SELECT EXISTS(SELECT * FROM INGREDIENTS WHERE nom_ingredient=$valueindex);";
+				$result = mysqli_query($link, $query,$result_mode=MYSQLI_STORE_RESULT);
+				if(!$result){
+					echo "$valueindex is not in Ingredients !"."</br>";
+				} else {
+					echo "$valueindex is in Ingredients !"."</br>";
+				}
+				
+				// -- Link table for index -- //
+				//$Sql = "INSERT INTO RECETTECONTIENTINGREDIENT($key,";
+			}
 		}
 
 		// Hiérarchie
