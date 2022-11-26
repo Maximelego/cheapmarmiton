@@ -63,17 +63,28 @@
 			// Harder values
 			// -> index values
 			foreach($value['index'] as $keyindex => $valueindex){
+
 				// -- Ingredients table -- //
-				$query = "SELECT EXISTS(SELECT * FROM INGREDIENTS WHERE nom_ingredient=$valueindex);";
-				$result = mysqli_query($link, $query,$result_mode=MYSQLI_STORE_RESULT);
-				if(!$result){
-					echo "$valueindex is not in Ingredients !"."</br>";
-				} else {
-					echo "$valueindex is in Ingredients !"."</br>";
+				$valuechanged = str_replace('"','""',$valueindex);
+				$valuechanged = str_replace("'","''",$valuechanged);
+				$query = "SELECT (id_ingredient) FROM INGREDIENTS WHERE (nom_ingredient='$valuechanged');";
+				//echo $query."</br>";
+				$result = mysqli_query($link, $query);
+				$checkrows = mysqli_num_rows($result);
+
+				if($checkrows == 0){
+					//echo "$valueindex is not in Ingredients !"."</br>";
+					$Sql = "INSERT INTO INGREDIENTS (nom_ingredient) VALUES ('$valuechanged');";
+					query($link, $Sql);
 				}
-				
+
 				// -- Link table for index -- //
-				//$Sql = "INSERT INTO RECETTECONTIENTINGREDIENT($key,";
+				$query = "SELECT (id_ingredient) FROM INGREDIENTS WHERE (nom_ingredient='$valuechanged');";
+				$result = mysqli_query($link, $query);
+				$index = mysqli_fetch_row($result);
+				$Sql = "INSERT INTO RECETTECONTIENTINGREDIENT VALUES ($key,$index[0]);";
+				query($link, $Sql);
+
 			}
 		}
 
