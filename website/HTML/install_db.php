@@ -1,42 +1,37 @@
 <?php // Création de la base de données
 
-  function query($link,$requete){
-    $resultat=link_query($link,$requete) or die("$requete : ".link_error($link));
-		return($resultat);
-  }
+	function query($link,$Sql){
+		if(isset($Sql) && strcmp($Sql,"") != 0){
+			$resultat=mysqli_query($link,$Sql) or die("$Sql : ".mysqli_error($link));
+			return($resultat);
+		} 
+		return 0;
+	}
 
 	function buildDatabase($link){
 		$base="BDD_Marmiton";
-		$Sql="
-			DROP TABLE RECETTECONTIENTINGREDIENT;
-			DROP TABLE INGREDIENTS;
-			DROP TABLE RECETTES;
-
+		$Sql="DROP DATABASE IF EXISTS $base;
+			CREATE DATABASE $base;
+			USE $base;
 			CREATE TABLE INGREDIENTS(
-				id_ingredient number(10),
-				nom_ingredient varchar(20) UNIQUE,
-				constraint PK_INGREDIENTS_id_ingredient PRIMARY KEY (id_ingredient)
+				id_ingredient INT PRIMARY KEY,
+				nom_ingredient VARCHAR(2000)
 			);
-
-			CREATE TABLE RECETTES (
-				id_recette number(10),
-				titre varchar(20),
-				ingredients varchar(200),
-				preparation varchar(2000),
-				constraint PK_RECETTES_id_recette PRIMARY KEY (id_recette)
+			CREATE TABLE RECETTES(
+				id_recette INT PRIMARY KEY,
+				titre VARCHAR(2000),
+				ingredients VARCHAR(2000),
+				preparation VARCHAR(2000)
 			);
-
 			CREATE TABLE RECETTECONTIENTINGREDIENT(
-				id_recette number(10),
-				id_ingredient number(10),
-				constraint PK_RECETTECONTIENTINGREDIENTS PRIMARY KEY (id_ingredient, id_recette),
-				constraint FK_RECETTECONTIENTINGREDIENTS_id_recette FOREIGN KEY (id_recette) REFERENCES RECETTES(id_recette),
-				constraint FK_RECETTECONTIENTINGREDIENTS_id_ingredients FOREIGN KEY (id_ingredient) REFERENCES INGREDIENTS(id_ingredient)
-			);
+				id_recette INT,
+				id_ingredient INT,
+				FOREIGN KEY (id_recette) REFERENCES RECETTES(id_recette),
+				FOREIGN KEY (id_ingredient) REFERENCES RECETTES(id_ingredient)
+			);";
 
-			describe INGREDIENTS;
-			describe RECETTES;
-			describe RECETTECONTIENTINGREDIENT;";
+		//DEBUG
+		//echo $Sql."</br>";
 
 		foreach(explode(';',$Sql) as $Requete) query($link,$Requete);
 	}
@@ -44,25 +39,33 @@
 	function implementData($link, $Recettes, $Hierarchie){
 		// Recettes
 		foreach($Recettes as $key => $value){
+			// Special chars
+			$titre = str_replace('"','""',$value['titre']);
+			$titre = str_replace("'","''",$titre);
+
+			$ingredients = str_replace('"','""',$value['ingredients']);
+			$ingredients = str_replace("'","''",$ingredients);
+
+			$preparation = str_replace('"','""',$value['preparation']);
+			$preparation = str_replace("'","''",$preparation);
+
+
 			// Easy values
-			$requete = "INSERT INTO RECETTES VALUES ($key,";
-			$requete .= "{$value['titre']},";
-			$requete .= "{$value['ingredients']},";
-			$requete .= "{$value['preparation']})";
-			query($link,$requete)
+			$Sql = "INSERT INTO RECETTES VALUES ($key,";
+			$Sql = $Sql."'".$titre."',";
+			$Sql = $Sql."'".$ingredients."',";
+			$Sql = $Sql."'".$preparation."');";
 
-			// Harder values
-
-
+			//DEBUG
+			//echo $Sql."</br>";
+			query($link, $Sql);
 		}
 
 		// Hiérarchie
 		foreach($Hierarchie as $key => $value){
-			echo "lol";
+			
 		}
 	}
-
-
 
 	# Data to add
 	$Recettes=array (
@@ -3790,11 +3793,11 @@
 	  ),
 	);
 
-	$link=link_connect('127.0.0.1', 'root', '') or die("Erreur de connexion");
+	$link=mysqli_connect('127.0.0.1', 'root', '') or die("Erreur de connexion");
 	#Creation of database
 	buildDatabase($link);
 	#Adding data
 	implementData($link, $Recettes, $Hierarchie);
-	link_close($link);
+	mysqli_close($link);
 
 ?>
