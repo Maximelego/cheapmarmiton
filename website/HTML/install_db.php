@@ -28,6 +28,18 @@
 				id_ingredient INT,
 				FOREIGN KEY (id_recette) REFERENCES RECETTES(id_recette),
 				FOREIGN KEY (id_ingredient) REFERENCES INGREDIENTS(id_ingredient)
+			);
+			CREATE TABLE SUPERCATEGORIE(
+				id_ingredient INT,
+				id_ingredientsupercategorie INT,
+				FOREIGN KEY (id_ingredient) REFERENCES INGREDIENTS(id_ingredient),
+				FOREIGN KEY (id_ingredient) REFERENCES INGREDIENTS(id_ingredient)
+			);
+			CREATE TABLE SOUSCATEGORIE(
+				id_ingredient INT,
+				id_ingredientsouscategorie INT,
+				FOREIGN KEY (id_ingredient) REFERENCES INGREDIENTS(id_ingredient),
+				FOREIGN KEY (id_ingredient) REFERENCES INGREDIENTS(id_ingredient)
 			);";
 
 		//DEBUG
@@ -77,6 +89,7 @@
 					$Sql = "INSERT INTO INGREDIENTS (nom_ingredient) VALUES ('$valuechanged');";
 					query($link, $Sql);
 				}
+				mysqli_free_result($result);
 
 				// -- Link table for index -- //
 				$query = "SELECT (id_ingredient) FROM INGREDIENTS WHERE (nom_ingredient='$valuechanged');";
@@ -84,6 +97,7 @@
 				$index = mysqli_fetch_row($result);
 				$Sql = "INSERT INTO RECETTECONTIENTINGREDIENT VALUES ($key,$index[0]);";
 				query($link, $Sql);
+				mysqli_free_result($result);
 
 			}
 		}
