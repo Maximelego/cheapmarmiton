@@ -1,0 +1,66 @@
+/* GLOBAL CSS */
+
+*{
+    margin:0;
+    padding: 0;
+    font-family: Arial;
+    box-sizing: border-box;
+}
+
+html{
+    font-size: 62.5%;
+}
+h1{
+    font-size: 2.6rem;
+}
+h2{
+    font-size: 4.8rem;
+}
+h3{
+    font-size: 3rem;
+}
+h4,h5{
+    font-size: 2.8rem;
+}
+
+li{
+    font-size: 2rem;
+}
+
+a{
+    color: #ffffff;
+    text-decoration: none;
+}
+/* HEADER */
+.main-head{
+    background: #FFCB77;
+    color: #ffffff;
+}
+
+nav{
+    min-height: 10vh;
+    display: flex;
+    align-items: center;
+    width: 90%;
+    margin: auto;
+    padding: 2rem;
+}
+
+nav ul{
+    display: flex;
+    flex: 1 1 40rem;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+}
+
+#logo{
+    display: flex;
+    flex: 4 1 40rem;
+}
+
+.header img{
+    float: left;
+  width: 100px;
+  height: 100px;
+}
