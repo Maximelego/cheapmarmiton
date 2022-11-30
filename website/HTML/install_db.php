@@ -116,14 +116,48 @@
 				$Sql = "INSERT INTO ELEMENTCATEGORIE (nom_element) VALUES ('$valuechanged');";
 				query($link, $Sql);
 			}
+			// Fetching the $element key from the table.
+			$query = "SELECT (id_element) FROM ELEMENTCATEGORIE WHERE (nom_element='$valuechanged');";
+			$result = mysqli_query($link, $query);
+			$index = mysqli_fetch_row($result);
 
-			if(array_key_exists("sous_categorie",$caracteristiques)){
+			if(array_key_exists("sous-categorie",$caracteristiques)){
 				$souscat = $caracteristiques["sous-categorie"];
-				
+				foreach($souscat as $key => $value){
+					// Searching if the value already exists
+					$valuechanged2 = transformStringToSQLCompatible($value);
+					if(!checkIfElementExists($link,$valuechanged2,"ELEMENTCATEGORIE")){
+						$Sql = "INSERT INTO ELEMENTCATEGORIE (nom_element) VALUES ('$valuechanged2');";
+						query($link, $Sql);
+					}
+					// Linking
+					$query = "SELECT (id_element) FROM ELEMENTCATEGORIE WHERE (nom_element='$valuechanged2');";
+					$result = mysqli_query($link, $query);
+					$index_element_second = mysqli_fetch_row($result);					
+					// -> Building link
+					$Sql = "INSERT INTO SOUSCATEGORIE VALUES ($index[0],$index_element_second[0]);";
+					query($link, $Sql);
+					mysqli_free_result($result);
+				}
 			}
-			if(array_key_exists("super_categorie",$caracteristiques)){
+			if(array_key_exists("super-categorie",$caracteristiques)){
 				$surcat = $caracteristiques["super-categorie"];
-
+				foreach($surcat as $key => $value){
+					// Searching if the value already exists
+					$valuechanged2 = transformStringToSQLCompatible($value);
+					if(!checkIfElementExists($link,$valuechanged2,"ELEMENTCATEGORIE")){
+						$Sql = "INSERT INTO ELEMENTCATEGORIE (nom_element) VALUES ('$valuechanged2');";
+						query($link, $Sql);
+					}
+					// Linking
+					$query = "SELECT (id_element) FROM ELEMENTCATEGORIE WHERE (nom_element='$valuechanged2');";
+					$result = mysqli_query($link, $query);
+					$index_element_second = mysqli_fetch_row($result);					
+					// -> Building link
+					$Sql = "INSERT INTO SUPERCATEGORIE VALUES ($index[0],$index_element_second[0]);";
+					query($link, $Sql);
+					mysqli_free_result($result);
+				}
 			}
 		}
 	}
