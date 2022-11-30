@@ -2,10 +2,18 @@
 
 	require "Donnees.inc.php";
 
-	function transformStringToSQLCompatible($string){
-		$valuechanged = str_replace('"','""',$string);
-		$valuechanged = str_replace("'","''",$valuechanged);
-		return $valuechanged;
+	function transformStringToSQLCompatible($link,$string){
+		return mysqli_real_escape_string($link,$string);
+	}
+
+	function addElementToTable($link, $element, $table){
+		if(strcmp($table,"INGREDIENTS") == 0){
+			$Sql = "INSERT INTO INGREDIENTS (nom_ingredient) VALUES ('$element');";
+			query($link, $Sql);
+		} else if(strcmp($table,"ELEMENTCATEGORIE") == 0) {
+			$Sql = "INSERT INTO ELEMENTCATEGORIE (nom_element) VALUES ('$element');";
+			query($link, $Sql);
+		}
 	}
 
 	function checkIfElementExists($link,$element,$table){
@@ -23,6 +31,22 @@
 		}
 		mysqli_free_result($result);
 		return $found;
+	}
+
+	function collectObjectID($link, $object, $table){
+		if(!checkIfElementExists($link, $object, $table)){
+			return false;
+		}
+		// -- Link table for index -- //
+		if(strcmp($table,"INGREDIENTS") == 0){
+			$query = "SELECT (id_ingredient) FROM INGREDIENTS WHERE (nom_ingredient='$object');";
+		} else if(strcmp($table,"ELEMENTCATEGORIE") == 0) {
+			$query = "SELECT (id_element) FROM ELEMENTCATEGORIE WHERE (nom_element='$object');";
+		}
+		$result = mysqli_query($link, $query);
+		$index = mysqli_fetch_row($result);
+		mysqli_free_result($result);
+		return $index;
 	}
 
 	function query($link,$Sql){
@@ -81,9 +105,9 @@
 		// Recettes
 		foreach($Recettes as $key => $value){
 			// Special chars
-			$titre = transformStringToSQLCompatible($value['titre']);
-			$ingredients = transformStringToSQLCompatible($value['ingredients']);
-			$preparation = transformStringToSQLCompatible($value['preparation']);
+			$titre = transformStringToSQLCompatible($link,$value['titre']);
+			$ingredients = transformStringToSQLCompatible($link,$value['ingredients']);
+			$preparation = transformStringToSQLCompatible($link,$value['preparation']);
 
 			// Easy values
 			$Sql = "INSERT INTO RECETTES VALUES ($key,"."'".$titre."',"."'".$ingredients."',"."'".$preparation."');";
@@ -92,71 +116,55 @@
 			// Harder values
 			// -> index values
 			foreach($value['index'] as $keyindex => $valueindex){
-				$valuechanged = transformStringToSQLCompatible($valueindex);
+				$valuechanged = transformStringToSQLCompatible($link,$valueindex);
 				if(!checkIfElementExists($link, $valuechanged, 'INGREDIENTS')){
-					$Sql = "INSERT INTO INGREDIENTS (nom_ingredient) VALUES ('$valuechanged');";
-					query($link, $Sql);
+					addElementToTable($link, $valuechanged, "INGREDIENTS");
 				}
-
 				// -- Link table for index -- //
-				$query = "SELECT (id_ingredient) FROM INGREDIENTS WHERE (nom_ingredient='$valuechanged');";
-				$result = mysqli_query($link, $query);
-				$index = mysqli_fetch_row($result);
+				$index = collectObjectID($link, $valuechanged,"INGREDIENTS");
 				$Sql = "INSERT INTO RECETTECONTIENTINGREDIENT VALUES ($key,$index[0]);";
 				query($link, $Sql);
-				mysqli_free_result($result);
 			}
 		}
 
 		// Hiérarchie
 		foreach($Hierarchie as $element => $caracteristiques){
 
-			$valuechanged = transformStringToSQLCompatible($element);
+			$valuechanged = transformStringToSQLCompatible($link,$element);
 			if(!checkIfElementExists($link, $valuechanged,'ELEMENTCATEGORIE')){
-				$Sql = "INSERT INTO ELEMENTCATEGORIE (nom_element) VALUES ('$valuechanged');";
-				query($link, $Sql);
+				addElementToTable($link, $valuechanged, "ELEMENTCATEGORIE");
 			}
 			// Fetching the $element key from the table.
-			$query = "SELECT (id_element) FROM ELEMENTCATEGORIE WHERE (nom_element='$valuechanged');";
-			$result = mysqli_query($link, $query);
-			$index = mysqli_fetch_row($result);
+			$index = collectObjectID($link,$valuechanged,"ELEMENTCATEGORIE");
 
 			if(array_key_exists("sous-categorie",$caracteristiques)){
 				$souscat = $caracteristiques["sous-categorie"];
 				foreach($souscat as $key => $value){
 					// Searching if the value already exists
-					$valuechanged2 = transformStringToSQLCompatible($value);
+					$valuechanged2 = transformStringToSQLCompatible($link,$value);
 					if(!checkIfElementExists($link,$valuechanged2,"ELEMENTCATEGORIE")){
-						$Sql = "INSERT INTO ELEMENTCATEGORIE (nom_element) VALUES ('$valuechanged2');";
-						query($link, $Sql);
+						addElementToTable($link, $valuechanged2, "ELEMENTCATEGORIE");
 					}
 					// Linking
-					$query = "SELECT (id_element) FROM ELEMENTCATEGORIE WHERE (nom_element='$valuechanged2');";
-					$result = mysqli_query($link, $query);
-					$index_element_second = mysqli_fetch_row($result);					
+					$index_element_second = collectObjectID($link, $valuechanged2, "ELEMENTCATEGORIE");
 					// -> Building link
 					$Sql = "INSERT INTO SOUSCATEGORIE VALUES ($index[0],$index_element_second[0]);";
 					query($link, $Sql);
-					mysqli_free_result($result);
 				}
 			}
 			if(array_key_exists("super-categorie",$caracteristiques)){
 				$surcat = $caracteristiques["super-categorie"];
 				foreach($surcat as $key => $value){
 					// Searching if the value already exists
-					$valuechanged2 = transformStringToSQLCompatible($value);
+					$valuechanged2 = transformStringToSQLCompatible($link,$value);
 					if(!checkIfElementExists($link,$valuechanged2,"ELEMENTCATEGORIE")){
-						$Sql = "INSERT INTO ELEMENTCATEGORIE (nom_element) VALUES ('$valuechanged2');";
-						query($link, $Sql);
+						addElementToTable($link, $valuechanged2, "ELEMENTCATEGORIE");
 					}
 					// Linking
-					$query = "SELECT (id_element) FROM ELEMENTCATEGORIE WHERE (nom_element='$valuechanged2');";
-					$result = mysqli_query($link, $query);
-					$index_element_second = mysqli_fetch_row($result);					
+					$index_element_second = collectObjectID($link, $valuechanged2, "ELEMENTCATEGORIE");
 					// -> Building link
 					$Sql = "INSERT INTO SUPERCATEGORIE VALUES ($index[0],$index_element_second[0]);";
 					query($link, $Sql);
-					mysqli_free_result($result);
 				}
 			}
 		}
@@ -167,10 +175,17 @@
 
 	// -- MAIN PROGRAM -- //
 	$link=mysqli_connect('127.0.0.1', 'root', '') or die("Erreur de connexion");
-	#Creation of database
-	buildDatabase($link);
-	#Adding data
-	implementData($link, $Recettes, $Hierarchie);
+	/* Modification du jeu de résultats en utf8mb4 */
+	if($link->set_charset("utf8")){
+		#Creation of database
+		buildDatabase($link);
+		#Adding data
+		implementData($link, $Recettes, $Hierarchie);
+	} else {
+		// -- DEBUG
+		//printf("Jeu de caractère initial : %s\n", $link->character_set_name());
+		echo "[ERREUR] - Impossible de changer le jeu de caractères... Abandon ...";
+	}
 	mysqli_close($link);
 	// ----------------- //
 
