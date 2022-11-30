@@ -2,6 +2,30 @@
 
 	require "Donnees.inc.php";
 
+	function checkIfElementExists($link,$element){
+		$found = true;
+
+		// -- Ingredients table -- //
+		$valuechanged = str_replace('"','""',$element);
+		$valuechanged = str_replace("'","''",$valuechanged);
+		$query = "SELECT (id_element) FROM ELEMENTCATEGORIE WHERE (nom_element='$valuechanged');";
+		
+		$result = mysqli_query($link, $query);
+		$checkrows = mysqli_num_rows($result);
+		
+		if($checkrows == 0){
+			//DEBUG
+			//echo "$valuechanged is not in Elements !"."</br>";
+			$found = false;
+		}
+		mysqli_free_result($result);
+
+		return $found;
+	}
+
+
+
+
 	function query($link,$Sql){
 		if(isset($Sql) && strcmp($Sql,"") != 0){
 			$resultat=mysqli_query($link,$Sql) or die("$Sql : ".mysqli_error($link));
@@ -31,17 +55,21 @@
 				FOREIGN KEY (id_recette) REFERENCES RECETTES(id_recette),
 				FOREIGN KEY (id_ingredient) REFERENCES INGREDIENTS(id_ingredient)
 			);
+			CREATE TABLE ELEMENTCATEGORIE(
+				id_element INT PRIMARY KEY AUTO_INCREMENT,
+				nom_element VARCHAR(2000)
+			);
 			CREATE TABLE SUPERCATEGORIE(
-				id_ingredient INT,
-				id_ingredientsupercategorie INT,
-				FOREIGN KEY (id_ingredient) REFERENCES INGREDIENTS(id_ingredient),
-				FOREIGN KEY (id_ingredient) REFERENCES INGREDIENTS(id_ingredient)
+				id_element INT,
+				id_elementsupercategorie INT,
+				FOREIGN KEY (id_element) REFERENCES ELEMENTCATEGORIE(id_element),
+				FOREIGN KEY (id_element) REFERENCES ELEMENTCATEGORIE(id_element)
 			);
 			CREATE TABLE SOUSCATEGORIE(
-				id_ingredient INT,
-				id_ingredientsouscategorie INT,
-				FOREIGN KEY (id_ingredient) REFERENCES INGREDIENTS(id_ingredient),
-				FOREIGN KEY (id_ingredient) REFERENCES INGREDIENTS(id_ingredient)
+				id_element INT,
+				id_elementsouscategorie INT,
+				FOREIGN KEY (id_element) REFERENCES ELEMENTCATEGORIE(id_element),
+				FOREIGN KEY (id_element) REFERENCES ELEMENTCATEGORIE(id_element)
 			);";
 
 		//DEBUG
@@ -91,7 +119,7 @@
 
 				if($checkrows == 0){
 					//DEBUG
-					//echo "$valueindex is not in Ingredients !"."</br>";
+					//echo "$valuechanged is not in Ingredients !"."</br>";
 					$Sql = "INSERT INTO INGREDIENTS (nom_ingredient) VALUES ('$valuechanged');";
 					query($link, $Sql);
 				}
@@ -109,8 +137,33 @@
 		}
 
 		// Hiérarchie
-		foreach($Hierarchie as $key => $value){
+		foreach($Hierarchie as $element => $caracteristiques){
+
+			if(!checkIfElementExists($link, $element)){
+				//DEBUG
+				echo "$valuechanged is not in Elements !"."</br>";
+				$Sql = "INSERT INTO ELEMENTCATEGORIE (nom_element) VALUES ('$valuechanged');";
+				query($link, $Sql);
+			}
+
+			if(array_key_exists("sous_categorie",$caracteristiques)){
+				$souscat = $caracteristiques["sous-categorie"];
+				foreach($souscat as $key => $souselement){
+
+
+
+				}
+			}
+			if(array_key_exists("super_categorie",$caracteristiques)){
+				$surcat = $caracteristiques["super-categorie"];
+			}
 			
+
+			// -- Implémentation de la sous-cat
+			//foreach($souscat as $key)
+			
+
+
 		}
 	}
 
