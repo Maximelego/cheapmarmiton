@@ -21,6 +21,12 @@
 			</nav>
 		</header>
 
+		<div class="searchbar">
+			<p>Rechercher</p>
+			<input type="text">
+			<img src="../ressource/Img/icons/search.svg">
+		</div>
+
 		<div class="wrapper">
 			<?php
 				$link=connectToDatabase();
@@ -31,8 +37,10 @@
 				while($index=mysqli_fetch_row($result)){
 					$image_name = scanTitle($index[1]);
 					if(file_exists("../ressources/Photos/$image_name.jpg")){
-						echo "<img src=\"../ressources/Photos/$image_name.jpg\" alt=\"$image_name\" class=\"box\"/>"."</br>";
-						//echo "<h2>"."$index[1]"."</h2>"."</br>";
+						echo "<div class=\"box\">";
+						echo "<img src=\"../ressources/Photos/$image_name.jpg\" alt=\"$image_name\"/>"."</br>";
+						echo "<h2>"."$index[1]"."</h2>"."</br>";
+						echo "</div>";
 					}
 				}
 				mysqli_close($link);
