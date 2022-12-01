@@ -24,7 +24,7 @@
 		<div class="searchbar">
 			<p>Rechercher</p>
 			<input type="text">
-			<img src="../ressource/Img/icons/search.svg">
+			<img src="../ressources/Img/icons/search.jpg">
 		</div>
 
 		<div class="wrapper">
