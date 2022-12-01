@@ -1,10 +1,7 @@
 <?php // Création de la base de données
 
 	require "Donnees.inc.php";
-
-	function transformStringToSQLCompatible($link,$string){
-		return mysqli_real_escape_string($link,$string);
-	}
+	require "helper.php";
 
 	function addElementToTable($link, $element, $table){
 		if(strcmp($table,"INGREDIENTS") == 0){
@@ -47,14 +44,6 @@
 		$index = mysqli_fetch_row($result);
 		mysqli_free_result($result);
 		return $index;
-	}
-
-	function query($link,$Sql){
-		if(isset($Sql) && strcmp($Sql,"") != 0){
-			$resultat=mysqli_query($link,$Sql) or die("$Sql : ".mysqli_error($link));
-			return($resultat);
-		} 
-		return 0;
 	}
 
 	function buildDatabase($link){
@@ -171,10 +160,8 @@
 	}
 
 
-
-
 	// -- MAIN PROGRAM -- //
-	$link=mysqli_connect('127.0.0.1', 'root', '') or die("Erreur de connexion");
+	$link=connectToDatabase();
 	/* Modification du jeu de résultats en utf8mb4 */
 	if($link->set_charset("utf8")){
 		#Creation of database
