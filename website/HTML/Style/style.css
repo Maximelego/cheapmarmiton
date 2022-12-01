@@ -57,6 +57,7 @@ nav ul{
 #logo{
     display: flex;
     flex: 4 1 40rem;
+    padding-left: 3rem;
 }
 
 .header img{
@@ -66,20 +67,44 @@ nav ul{
 }
 
 img{
-    width: 150px;
-    height: 150px;
+    width: 250px;
+    height: 250px;
     border-radius:8px;
 }
 .wrapper {
     display: grid;
-    grid-template-columns: 200px 200px 200px 200px;
+    grid-template-columns: 300px 300px 300px 300px;
     grid-gap: 10px;
+    justify-content: center;
+    align-items: center;
 }
 
 .box{
-    border-radius: 5px;
-    padding: 5px;
+    border-radius: 10px;
+    margin-top: 30px;
+    padding: 10px;
     font-size: 150%;
     align-self: center;
     justify-self: center;
+    background-color: #ebe9e9;
+
 }
+
+.searchbar{
+    background: #FFCB77;
+    text-align: center;   
+}
+.searchbar img{
+    vertical-align: middle;
+    background: #FFCB77;
+    width: 30px;
+    height:30px;
+}
+.searchbar input{
+    vertical-align: middle;
+    margin: 10px;
+    height: 30px;
+    width: 300px;
+    border-radius: 7px;
+}
+
