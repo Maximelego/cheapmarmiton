@@ -27,14 +27,16 @@ li{
     font-size: 2rem;
 }
 
-a{
-    color: #ffffff;
-    text-decoration: none;
-}
+
 /* HEADER */
 .main-head{
     background: #FFCB77;
     color: #ffffff;
+}
+
+.main-head a{
+    color: #ffffff;
+    text-decoration: none;
 }
 
 nav{
@@ -87,7 +89,6 @@ img{
     align-self: center;
     justify-self: center;
     background-color: #ebe9e9;
-
 }
 
 .searchbar{
