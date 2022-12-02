@@ -17,23 +17,22 @@
 			$index = mysqli_fetch_row($result);
 
 			// -- Classical values -- //
-			foreach($index as $key => $value){
-				if($key != 0){
-					if($key ==  1){
-						echo "<h1>".$value."</h1>";
-					} else if($key == 2){
-						echo "<h2>"."Ingrédients : "."</h2>";
-						echo "<ul>";
-						foreach(explode("|",$value) as $str){
-							echo "<li>".$str."</li>";
-						}
-						echo "</ul>";
-					} else if($key == 3){
-						echo "<h2>"."Recette : "."</h2>";
-						echo "<h3>".$value."</h3>";
-					}
-				}
+			echo "<h1>".$index[1]."</h1>";
+
+			$image_name = scanTitle($index[1]);
+			if (file_exists("../ressources/Photos/$image_name.jpg")) {
+				echo "<img src=\"../ressources/Photos/$image_name.jpg\" alt=\"$image_name\"/>"."</br>";
+			} else {
+				echo "<img src=\"../ressources/Photos/DEFAULT.jpg\" alt=\"DEFAULT\"/>"."</br>";
 			}
+			echo "<h2>"."Ingrédients : "."</h2>";
+			echo "<ul>";
+			foreach(explode("|",$index[2]) as $str){
+				echo "<li>".$str."</li>";
+			}
+			echo "</ul>";
+			echo "<h2>"."Recette : "."</h2>";
+			echo "<h3>".$index[3]."</h3>";
 
 			// -- Ingredients list -- //
 			/*echo "<ul>";
