@@ -147,7 +147,7 @@
 	// -- MAIN PROGRAM -- //
 	$link=connectToDatabase();
 	/* Modification du jeu de résultats en utf8mb4 */
-	if($link->set_charset("utf8")){
+	if($link->set_charset("UTF8")){
 		#Creation of database
 		buildDatabase($link);
 		#Adding data
