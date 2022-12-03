@@ -5,8 +5,8 @@
 		$link = connectToDatabase();
 
 		// Define variables and initialize with empty values
-		$username = $password = $confirm_password = "";
-		$username_err = $password_err = $confirm_password_err = "";
+		$username = $password = $confirm_password = $name = "";
+		$username_err = $password_err = $confirm_password_err = $name_err = "";
 		
 		// Processing form data when form is submitted
 		if($_SERVER["REQUEST_METHOD"] == "POST"){
@@ -33,7 +33,7 @@
 						mysqli_stmt_store_result($stmt);
 						
 						if(mysqli_stmt_num_rows($stmt) == 1){
-							$username_err = "This username is already taken.";
+							$username_err = "Ce nom d'utilisateur est déjà utilisé.";
 						} else{
 							$username = trim($_POST["username"]);
 						}
@@ -48,28 +48,37 @@
 			
 			// Validate password
 			if(empty(trim($_POST["password"]))){
-				$password_err = "Please enter a password.";     
+				$password_err = "Veuillez entrer un mot de passe.";     
 			} elseif(strlen(trim($_POST["password"])) < 6){
-				$password_err = "Password must have atleast 6 characters.";
+				$password_err = "Votre mot de passe doit contenir au mois 6 caractères.";
 			} else{
 				$password = trim($_POST["password"]);
 			}
 			
 			// Validate confirm password
 			if(empty(trim($_POST["confirm_password"]))){
-				$confirm_password_err = "Please confirm password.";     
+				$confirm_password_err = "Veuillez confirmer le mot de passe.";     
 			} else{
 				$confirm_password = trim($_POST["confirm_password"]);
 				if(empty($password_err) && ($password != $confirm_password)){
-					$confirm_password_err = "Password did not match.";
+					$confirm_password_err = "Les mots de passe ne correspondent pas.";
 				}
+			}
+
+			// Validate Name
+			if(empty(trim($_POST["password"]))){
+				$password_err = "Veuillez entrer un mot de passe.";     
+			} elseif(strlen(trim($_POST["password"])) < 6){
+				$password_err = "Votre mot de passe doit contenir au mois 6 caractères.";
+			} else{
+				$password = trim($_POST["password"]);
 			}
 			
 			// Check input errors before inserting in database
 			if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
 				
 				// Prepare an insert statement
-				$sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+				$sql = "INSERT INTO UTILISATEUR (psuedo, mdp) VALUES (?, ?)";
 				
 				if($stmt = mysqli_prepare($link, $sql)){
 					// Bind variables to the prepared statement as parameters
@@ -82,7 +91,7 @@
 					// Attempt to execute the prepared statement
 					if(mysqli_stmt_execute($stmt)){
 						// Redirect to login page
-						header("location: login.php");
+						header("location: connexion.php");
 					} else{
 						echo "Oops! Something went wrong. Please try again later.";
 					}
@@ -125,8 +134,13 @@
 					<span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
 				</div>
 				<div class="form-group">
-					<input type="submit" class="btn btn-primary" value="Submit">
-					<input type="reset" class="btn btn-secondary ml-2" value="Reset">
+					<label>Nom</label>
+					<input type="text" name="name" class="form-control <?php echo (!empty($name_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $name; ?>">
+					<span class="invalid-feedback"><?php echo $name_err; ?></span>
+				</div>
+				<div class="form-group">
+					<input type="submit" class="btn btn-primary" value="S'inscrire">
+					<input type="reset" class="btn btn-secondary ml-2" value="Effacer le formulaire">
 				</div>
 				<p>Vous possèdez déjà un compte ? <a href="login.php">Connectez vous ici</a>.</p>
 			</form>

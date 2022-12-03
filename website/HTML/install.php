@@ -51,14 +51,15 @@
 				FOREIGN KEY (id_elementsouscategorie) REFERENCES ELEMENTCATEGORIE(id_element)
 			);
 			CREATE TABLE UTILISATEUR(
-				id_utilisateur VARCHAR(255) PRIMARY KEY,
+				id_utilisateur INT PRIMARY KEY AUTO_INCREMENT,
+				psuedo VARCHAR(255),
 				mdp VARCHAR(255),
 				nom VARCHAR(255),
 				prenom VARCHAR(255),
 				mail VARCHAR(255)
 			);
 			CREATE TABLE PANIER(
-				id_utilisateur VARCHAR(255),
+				id_utilisateur INT,
 				id_recette INT,
 				FOREIGN KEY (id_utilisateur) REFERENCES UTILISATEUR(id_utilisateur),
 				FOREIGN KEY (id_recette) REFERENCES RECETTES(id_recette)
@@ -127,7 +128,7 @@
 					// Searching if the value already exists
 					$valuechanged2 = transformStringToSQLCompatible($link,$value);
 					if(!checkIfElementExists($link,$valuechanged2,"ELEMENTCATEGORIE")){
-						addElementToTable($link, $valuechanged2, "ELEMENTCATEGORIE");
+						addElementToTable($link,$valuechanged2,"ELEMENTCATEGORIE");
 					}
 					// Linking
 					$index_element_second = collectObjectID($link, $valuechanged2, "ELEMENTCATEGORIE");
