@@ -18,6 +18,25 @@
 		return $index;
 	}
 
+	function checkIfElementExists($link,$element,$table){
+		$found = true;
+		if(strcmp($table,"INGREDIENTS") == 0){
+			$query = "SELECT id_ingredient FROM $table WHERE (nom_ingredient='$element');";
+		} else if(strcmp($table,"ELEMENTCATEGORIE") == 0) {
+			$query = "SELECT id_element FROM $table WHERE (nom_element='$element');";
+		} else if(strcmp($table,"UTILISATEUR") == 0){
+			$query = "SELECT id_utilisateur FROM $table WHERE (id_utilisateur='$element');";
+		}
+		
+		$result = mysqli_query($link, $query);
+		$checkrows = mysqli_num_rows($result);
+		if($checkrows == 0){
+			$found = false;
+		}
+		mysqli_free_result($result);
+		return $found;
+	}
+
     function query($link,$Sql){
 		if(isset($Sql) && strcmp($Sql,"") != 0){
 			$resultat=mysqli_query($link,$Sql) or die("$Sql : ".mysqli_error($link));

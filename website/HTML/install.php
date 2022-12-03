@@ -13,23 +13,6 @@
 		}
 	}
 
-	function checkIfElementExists($link,$element,$table){
-		$found = true;
-		if(strcmp($table,"INGREDIENTS") == 0){
-			$query = "SELECT id_ingredient FROM $table WHERE (nom_ingredient='$element');";
-		} else if(strcmp($table,"ELEMENTCATEGORIE") == 0) {
-			$query = "SELECT id_element FROM $table WHERE (nom_element='$element');";
-		}
-		
-		$result = mysqli_query($link, $query);
-		$checkrows = mysqli_num_rows($result);
-		if($checkrows == 0){
-			$found = false;
-		}
-		mysqli_free_result($result);
-		return $found;
-	}
-
 	function buildDatabase($link){
 		$base="BDD_Marmiton";
 		$Sql="DROP DATABASE IF EXISTS $base;
@@ -65,7 +48,20 @@
 				id_element INT,
 				id_elementsouscategorie INT,
 				FOREIGN KEY (id_element) REFERENCES ELEMENTCATEGORIE(id_element),
-				FOREIGN KEY (id_element) REFERENCES ELEMENTCATEGORIE(id_element)
+				FOREIGN KEY (id_elementsouscategorie) REFERENCES ELEMENTCATEGORIE(id_element)
+			);
+			CREATE TABLE UTILISATEUR(
+				id_utilisateur VARCHAR(255) PRIMARY KEY,
+				mdp VARCHAR(255),
+				nom VARCHAR(255),
+				prenom VARCHAR(255),
+				mail VARCHAR(255)
+			);
+			CREATE TABLE PANIER(
+				id_utilisateur VARCHAR(255),
+				id_recette INT,
+				FOREIGN KEY (id_utilisateur) REFERENCES UTILISATEUR(id_utilisateur),
+				FOREIGN KEY (id_recette) REFERENCES RECETTES(id_recette)
 			);";
 
 		//DEBUG
@@ -88,7 +84,7 @@
 
 			// Harder values
 			// -> index values
-			foreach($value['index'] as $keyindex => $valueindex){
+			foreach($value['index'] as $valueindex){
 				$valuechanged = transformStringToSQLCompatible($link,$valueindex);
 				if(!checkIfElementExists($link, $valuechanged, 'INGREDIENTS')){
 					addElementToTable($link, $valuechanged, "INGREDIENTS");
@@ -141,6 +137,9 @@
 				}
 			}
 		}
+
+		$Sql = "INSERT INTO UTILISATEUR VALUES ('testuser','password','test','user','test@gmail.com');";
+		query($link,$Sql);
 	}
 
 
