@@ -46,8 +46,23 @@
 	}
 
     function scanTitle($title){
-        $formattedTitle = str_replace(" ","_", $title);
-        return $formattedTitle;
+		$wanted_array = array(
+			"S", "s", "Z", "z", "A", "A", "A", "A", "A", "A", "A", "C", "E", "E",
+			"E", "E", "I", "I", "I", "I", "N", "O", "O", "O", "O", "O", "O", "U",
+			"U", "U", "U", "Y", "B", "Ss", "a", "a", "a", "a", "a", "a", "a", "c",
+			"e", "e", "e", "e", "i", "i", "i", "i", "o", "n", "o", "o", "o", "o",
+			"o", "o", "u", "u", "u", "y", "b", "y"
+		);
+		$unwanted_array = array(    
+			"Š", "š", "Ž", "ž", "À", "Á", "Â", "Ã", "Ä", "Å", "Æ", "Ç", "È", "É",
+			"Ê", "Ë", "Ì", "Í", "Î", "Ï", "Ñ", "Ò", "Ó", "Ô", "Õ", "Ö", "Ø", "Ù",
+			"Ú", "Û", "Ü", "Ý", "Þ" , "ß", "à", "á", "â", "ã", "ä", "å", "æ", "ç",
+			"è", "é", "ê", "ë", "ì", "í", "î", "ï", "ð", "ñ", "ò", "ó", "ô", "õ",
+			"ö", "ø", "ù", "ú", "û", "ý", "þ", "ÿ"
+		);
+		$formattedTitle = str_replace($unwanted_array,$wanted_array,utf8_encode($title));
+		$formattedTitle = str_replace(" ","_", $formattedTitle);
+        return utf8_encode($formattedTitle);
     }
 
 	function connectToDatabase(){

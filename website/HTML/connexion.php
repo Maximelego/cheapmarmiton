@@ -11,10 +11,10 @@
         <h1>Connexion</h1>
 		<form id="connexion" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
 			<label for="identifiant">Identifiant</label>
-			<input type="text" name="identifiant"></br>
+			<input required="true" type="text" name="identifiant"></br>
 
 			<label for="mdp">Mot de passe</label>
-			<input type="password" name="mdp"></br>
+			<input required="true" type="password" name="mdp"></br>
 			
 			<p>Pas encore inscrit ? <a href="inscription.php">S'inscrire</a></p>
 
