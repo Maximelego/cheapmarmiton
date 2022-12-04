@@ -16,6 +16,10 @@
 				<img src="../ressources/Img/logoCM4.jpg" alt="logo" />
 			</div>
 			<h1 id="logo">CheapMarmiton</h1>
+			<div class="searchbar">
+				<input type="text">
+				<img src="../ressources/Img/icons/search.png">
+			</div>
 			<ul>
 				<li><a href="connexion.php"><img src="../ressources/Img/icons/login.png" alt="login" style="width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:3px" />Se connecter</a> </li>
 				<li><a href="favoris.php"><img src="../ressources/Img/icons/favoris.png" alt="favoris" style="width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:10px" />Mes favoris</a> </li>
@@ -23,10 +27,7 @@
 		</nav>
 	</header>
 
-	<div class="searchbar">
-		<input type="text">
-		<img src="../ressources/Img/icons/search.png">
-	</div>
+
 
 	<div class="wrapper">
 		<?php
@@ -41,7 +42,7 @@
 				echo "<div class=\"box\">";
 				echo "<a href=\"recette.php?id_recette=$index[0]\">";
 				echo "<img src=\"../ressources/Photos/$image_name.jpg\" alt=\"$image_name\"/>" . "</br>";
-				echo "<h2>" .utf8_encode($index[1])."</h2>" . "</br>";
+				echo "<h2>" . utf8_encode($index[1]) . "</h2>" . "</br>";
 				echo "</a>";
 				echo "</div>";
 			}

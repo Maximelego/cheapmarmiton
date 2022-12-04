@@ -10,7 +10,8 @@ html{
     font-size: 62.5%;
 }
 h1{
-    font-size: 2.6rem;
+    font-size: 4rem;
+    font-family: 'Times New Roman', Times, serif;
 }
 h2{
     font-size: 2rem;
@@ -30,7 +31,10 @@ li{
 
 /* HEADER */
 .main-head{
-    background: #FFCB77;
+    background-color: #f98808;
+    background-image: linear-gradient(62deg, #f98808 0%, #F7CE68 100%);
+    
+
     color: #ffffff;
 }
 
@@ -56,6 +60,18 @@ nav ul{
     list-style: none;
 }
 
+.searchbar img{
+    vertical-align: middle;
+    width: 30px;
+    height:30px;
+}
+.searchbar input{
+    margin: 10px;
+    height: 30px;
+    width: 300px;
+    border-radius: 7px;
+}
+
 #logo{
     display: flex;
     flex: 4 1 40rem;
@@ -64,8 +80,8 @@ nav ul{
 
 .header img{
     float: left;
-  width: 100px;
-  height: 100px;
+    width: 100px;
+    height: 100px;
 }
 
 img{
@@ -88,24 +104,5 @@ img{
     font-size: 150%;
     align-self: center;
     justify-self: center;
-    background-color: #ebe9e9;
+   
 }
-
-.searchbar{
-    background: #FFCB77;
-    text-align: center;   
-}
-.searchbar img{
-    vertical-align: middle;
-    background: #FFCB77;
-    width: 30px;
-    height:30px;
-}
-.searchbar input{
-    vertical-align: middle;
-    margin: 10px;
-    height: 30px;
-    width: 300px;
-    border-radius: 7px;
-}
-

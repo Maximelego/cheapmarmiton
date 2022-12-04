@@ -1,0 +1,176 @@
+/* GLOBAL CSS */
+
+*{
+    margin:0;
+    padding: 0;
+    font-family: Arial;
+}
+html{
+    font-size: 62.5%;
+}
+h1{
+    font-size: 4rem;
+    font-family: 'Times New Roman', Times, serif;
+}
+h2{
+    font-size: 2rem;
+    text-align: center;
+}
+h3{
+    font-size: 1.8rem;
+}
+h4,h5{
+    font-size: 1.6rem;
+}
+
+li{
+    font-size: 2rem;
+}
+
+/* HEADER */
+/* HEADER */
+.main-head{
+    background-color: #f98808;
+    background-image: linear-gradient(62deg, #f98808 0%, #F7CE68 100%);
+
+
+    color: #ffffff;
+}
+
+.main-head a{
+    color: #ffffff;
+    text-decoration: none;
+}
+
+nav{
+    min-height: 10vh;
+    display: flex;
+    align-items: center;
+    width: 90%;
+    margin: auto;
+    padding: 2rem;
+}
+
+nav ul{
+    display: flex;
+    flex: 1 1 40rem;
+    justify-content: space-around;
+    align-items: center;
+    list-style: none;
+}
+
+.searchbar img{
+    vertical-align: middle;
+    width: 30px;
+    height:30px;
+}
+.searchbar input{
+    margin: 10px;
+    height: 30px;
+    width: 300px;
+    border-radius: 7px;
+}
+
+#logo{
+    display: flex;
+    flex: 4 1 40rem;
+    padding-left: 3rem;
+}
+
+.header img{
+    float: left;
+  width: 100px;
+  height: 100px;
+}
+
+img{
+    width: 250px;
+    height: 250px;
+    border-radius:8px;
+}
+
+
+
+/* Connexion  box*/
+#frm{
+    border: solid gray 1px;
+    width:25%;
+    border-radius: 2px;
+    margin: 120px auto;
+
+	padding: 2em;
+	display: flex;
+	flex-direction: column;
+	border-radius: 30px;
+	box-shadow: 0 0 2em rgb(254, 156, 43);
+
+    font-size: 2rem;
+    background-color:#FFFFC7;
+}
+
+#frm input{
+    vertical-align: middle;
+    margin: 10px;
+    height: 30px;
+    width: 200px;
+    border-radius: 7px;
+
+}
+
+#seCoInput{
+    text-align: center;
+    margin-top: 10px;
+
+}
+
+#seCoInput input{
+    background-color: #FFCB77;
+}
+
+
+.wrapper {
+    display: grid;
+    grid-gap: 10px;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 2rem;
+
+    border: solid gray 1px;
+    width:25%;
+    height: 50%;
+    border-radius: 2px;
+    margin: 120px auto;
+
+	padding: 2em;
+	display: flex;
+	flex-direction: column;
+	border-radius: 30px;
+	box-shadow: 0 0 2em rgb(254, 156, 43);
+
+    background-color: #FFFFC7;
+}
+.container{
+    text-align: left;
+}
+.container input{
+    vertical-align: middle;
+    margin: 10px;
+    height: 30px;
+    width: 300px;
+    border-radius: 7px;
+}
+body{
+    background-image: url(https://cdn.pixabay.com/photo/2020/12/08/14/20/cocktail-5814563_1280.jpg);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+}
+
+.form-group-button input{
+    background-color: #FFCB77;
+    border-radius: 7px;
+    height: 30px;
+    width: 200px;
+    margin: 5px;
+
+}
