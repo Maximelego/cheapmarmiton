@@ -1,6 +1,96 @@
+<?php
+	require "helper.php";
+	// Initialize the session
+	session_start();
+	
+	// Check if the user is already logged in, if yes then redirect him to welcome page
+	if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] === true){
+		header("Location: accueil.php");
+		exit;
+	}
+	
+	// Include config file
+	$link=connectToDatabase();
+	query($link,"USE $base"); 
+
+	// Define variables and initialize with empty values
+	$username = $password = "";
+	$username_err = $password_err = $login_err = "";
+	
+	// Processing form data when form is submitted
+	if($_SERVER["REQUEST_METHOD"] == "POST"){
+	
+		// Check if username is empty
+		if(isset($_POST["username"]) && empty(trim($_POST["username"]))){
+			$username_err = "Veuillez saisir un nom d'utilisateur.";
+		} else{
+			$username = trim($_POST["username"]);
+		}
+		
+		// Check if password is empty
+		if(isset($_POST["username"]) && empty(trim($_POST["mdp"]))){
+			$password_err = "Veuillez saisir votre mot de passe.";
+		} else{
+			$password = trim($_POST["mdp"]);
+		}
+		
+		// Validate credentials
+		if(empty($username_err) && empty($password_err)){
+			// Prepare a select statement
+			$sql = "SELECT id_utilisateur, pseudo, mdp FROM UTILISATEUR WHERE pseudo = ?";
+			
+			if($stmt = mysqli_prepare($link, $sql)){
+				// Bind variables to the prepared statement as parameters
+				mysqli_stmt_bind_param($stmt, "s", $param_username);
+				
+				// Set parameters
+				$param_username = $username;
+				
+				// Attempt to execute the prepared statement
+				if(mysqli_stmt_execute($stmt)){
+					// Store result
+					mysqli_stmt_store_result($stmt);
+					
+					// Check if username exists, if yes then verify password
+					if(mysqli_stmt_num_rows($stmt) == 1){             
+						// Bind result variables
+						mysqli_stmt_bind_result($stmt, $id, $username, $hashed_password);
+						if(mysqli_stmt_fetch($stmt)){
+							if(password_verify($password, $hashed_password)){
+								// Password is correct, so start a new session
+								session_start();
+								
+								// Store data in session variables
+								$_SESSION["loggedin"] = true;
+								$_SESSION["id"] = $id;
+								$_SESSION["username"] = $username;                            
+								
+								// Redirect user to welcome page
+								header("Location: accueil.php");
+							} else{
+								// Password is not valid, display a generic error message
+								$login_err = "Le mot de passe est invalide.";
+							}
+						}
+					} else{
+						// Username doesn't exist, display a generic error message
+						$login_err = "Le nom d'utilisateur n'existe pas.";
+					}
+				} else{
+					echo "Oops! Something went wrong. Please try again later.";
+				}
+
+				// Close statement
+				mysqli_stmt_close($stmt);
+			}
+		}
+		// Close connection
+		mysqli_close($link);
+	}
+?>
+
 <!DOCTYPE html>
 <html lang="fr">
-
 <head>
 	<title>Cheap Marmiton | Recettes de cocktails</title>
 	<meta charset="UTF-8">
@@ -30,43 +120,22 @@
 
 	<div id="frm">
 		<h1>Connexion</h1>
-		<form id="connexion" action="<?php $_SERVER["PHP_SELF"] ?>" method="POST">
-			<label for="identifiant">Identifiant</label>
-			<input required="true" type="text" name="identifiant"></br>
-
-			<label for="mdp">Mot de passe</label>
-			<input required="true" type="password" name="mdp"></br>
-
-			<p>Pas encore inscrit ? <a href="inscription.php">S'inscrire</a></p>
-
-			<div id="seCoInput">
-				<input id="seCoInput" type="submit" value="Se connecter">
-			</div>
-
-		</form>
-
-		<?php
-		require "helper.php";
-		if (isset($_POST['identifiant'])) {
-			$link = connectToDatabase();
-			query($link, "USE BDD_marmiton");
-			$id = transformStringToSQLCompatible($link, $_POST['identifiant']);
-			$password = $_POST['mdp'];
-			if (!checkIfElementExists($link, $id, "UTILISATEUR")) {
-				echo "ID does not exists !";
-			} else {
-				$Sql = "SELECT id_utilisateur FROM UTILISATEUR WHERE id_utilisateur='$id' AND mdp='$password';";
-				$result = query($link, $Sql);
-				if (mysqli_num_rows($result) == 1) {
-					// Do stuff to connect user //
-
-					echo "Connexion réussie !";
-				} else {
-					echo "Connexion échouée !";
-				}
-			}
-		}
-		?>
+		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <div class="form-group">
+                <label>Nom d'utilisateur</label>
+                <input type="text" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+                <span class="invalid-feedback"><?php echo $username_err; ?></span>
+            </div>    
+            <div class="form-group">
+                <label>Mot de passe</label>
+                <input type="password" name="mdp" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
+                <span class="invalid-feedback"><?php echo $password_err; ?></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Connexion">
+            </div>
+            <p>Pas encore inscrit ? <a href="inscription.php">Inscrivez vous ici</a>.</p>
+        </form>
 	</div>
 </body>
 

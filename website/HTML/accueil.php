@@ -1,3 +1,15 @@
+<?php
+	// Initialize the session
+	session_start();
+	
+	// Check if the user is logged in
+	/*if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+		header("location: conne.php");
+		exit;
+	}*/
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 

@@ -52,7 +52,7 @@
 			);
 			CREATE TABLE UTILISATEUR(
 				id_utilisateur INT PRIMARY KEY AUTO_INCREMENT,
-				psuedo VARCHAR(255),
+				pseudo VARCHAR(255),
 				mdp VARCHAR(255),
 				nom VARCHAR(255),
 				prenom VARCHAR(255),
@@ -139,7 +139,8 @@
 			}
 		}
 
-		$Sql = "INSERT INTO UTILISATEUR VALUES ('testuser','password','test','user','test@gmail.com');";
+		$password = password_hash("password", PASSWORD_DEFAULT);
+		$Sql = "INSERT INTO UTILISATEUR (pseudo,mdp,nom,prenom,mail) VALUES ('testuser','$password','test','user','test@gmail.com');";
 		query($link,$Sql);
 	}
 
