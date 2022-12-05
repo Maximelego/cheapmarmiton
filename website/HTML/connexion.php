@@ -91,52 +91,51 @@
 
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-	<title>Cheap Marmiton | Recettes de cocktails</title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width,initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" href="Style/styleInscriptionConnexion.css? ">
-	<meta http-equiv="Cache-control" content="no-cache">
+	<head>
+		<title>Cheap Marmiton | Recettes de cocktails</title>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1.0">
+		<link rel="stylesheet" type="text/css" href="Style/styleInscriptionConnexion.css? ">
+		<meta http-equiv="Cache-control" content="no-cache">
 
-</head>
+	</head>
+	<body>
+		<header class="main-head">
+			<nav>
+				<div class="header">
+					<img src="../ressources/Img/logoCM4.jpg" alt="logo" />
+				</div>
+				<h1 id="logo">CheapMarmiton</h1>
+				<div class="searchbar">
+					<input type="text">
+					<img src="../ressources/Img/icons/search.png">
+				</div>
+				<ul>
+					<li><a href="connexion.php"><img src="../ressources/Img/icons/login.png" alt="login" style="width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:3px" />Se connecter</a> </li>
+					<li><a href="favoris.php"><img src="../ressources/Img/icons/favoris.png" alt="favoris" style="width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:10px" />Mes favoris</a> </li>
+				</ul>
+			</nav>
+		</header>
 
-<body>
-	<header class="main-head">
-		<nav>
-			<div class="header">
-				<img src="../ressources/Img/logoCM4.jpg" alt="logo" />
-			</div>
-			<h1 id="logo">CheapMarmiton</h1>
-			<div class="searchbar">
-				<input type="text">
-				<img src="../ressources/Img/icons/search.png">
-			</div>
-			<ul>
-				<li><a href="connexion.php"><img src="../ressources/Img/icons/login.png" alt="login" style="width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:3px" />Se connecter</a> </li>
-				<li><a href="favoris.php"><img src="../ressources/Img/icons/favoris.png" alt="favoris" style="width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:10px" />Mes favoris</a> </li>
-			</ul>
-		</nav>
-	</header>
-
-	<div id="frm">
-		<h1>Connexion</h1>
-		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
-            <div class="form-group">
-                <label>Nom d'utilisateur</label>
-                <input type="text" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
-                <span class="invalid-feedback"><?php echo $username_err; ?></span>
-            </div>    
-            <div class="form-group">
-                <label>Mot de passe</label>
-                <input type="password" name="mdp" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
-                <span class="invalid-feedback"><?php echo $password_err; ?></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" class="btn btn-primary" value="Connexion">
-            </div>
-            <p>Pas encore inscrit ? <a href="inscription.php">Inscrivez vous ici</a>.</p>
-        </form>
-	</div>
-</body>
+		<div id="frm">
+			<h1>Connexion</h1>
+			<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+				<div class="form-group">
+					<label>Nom d'utilisateur</label>
+					<input type="text" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+					<span class="invalid-feedback"><?php echo $username_err; ?></span>
+				</div>    
+				<div class="form-group">
+					<label>Mot de passe</label>
+					<input type="password" name="mdp" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
+					<span class="invalid-feedback"><?php echo $password_err; ?></span>
+				</div>
+				<div class="form-group">
+					<input type="submit" class="btn btn-primary" value="Connexion">
+				</div>
+				<p>Pas encore inscrit ? <a href="inscription.php">Inscrivez vous ici</a>.</p>
+			</form>
+		</div>
+	</body>
 
 </html>
