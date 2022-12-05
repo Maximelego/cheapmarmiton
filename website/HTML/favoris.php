@@ -43,6 +43,7 @@
 				query($link, "USE $base;");
 
 				$id = $_SESSION["id"];
+				$Sql = "SELECT * FROM PANIER JOIN RECETTES USING (id_recette) WHERE PANIER.id_utilisateur=$id;";
 				$result = query($link, $Sql);
 
 				while ($index = mysqli_fetch_row($result)) {
