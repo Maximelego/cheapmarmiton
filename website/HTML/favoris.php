@@ -1,3 +1,9 @@
+<?php
+	// Initialize the session
+	session_start();
+?>
+
+
 <!DOCTYPE html>
 <html lang="fr">
 	<head>
@@ -30,5 +36,35 @@
 				</ul>
 			</nav>
 		</header>
+
+		<div class="wrapper">
+			<?php
+				$link = connectToDatabase();
+				query($link, "USE $base;");
+
+				$id = $_SESSION["id"];
+				$result = query($link, $Sql);
+
+				while ($index = mysqli_fetch_row($result)) {
+
+					echo "<div class=\"box\">";
+					echo "<a href=\"recette.php?id_recette=$index[0]\">";
+					$image_name = scanTitle($index[2]);
+					if (file_exists("../ressources/Photos/$image_name.jpg")) {
+						echo "<img src=\"../ressources/Photos/$image_name.jpg\" alt=\"$image_name\"/>" . "</br>";
+					} else {
+						echo "<img src=\"../ressources/Photos/DEFAULT.png\" alt=\"$image_name\"/>" . "</br>";
+					}
+					echo "<h2>" . utf8_encode($index[2]) . "</h2>" . "</br>";
+					echo "</a>";
+					echo "</div>";
+				}
+				mysqli_close($link);
+			?>
+		</div>
+
+
+
+
 	</body>
 </html>

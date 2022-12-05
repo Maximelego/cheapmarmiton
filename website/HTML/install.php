@@ -139,10 +139,20 @@
 			}
 		}
 
+	
+		// -- TEST user -- //
+		// -> User
 		$password = password_hash("password", PASSWORD_DEFAULT);
 		$Sql = "INSERT INTO UTILISATEUR (pseudo,mdp,nom,prenom,mail) VALUES ('testuser','$password','test','user','test@gmail.com');";
 		query($link,$Sql);
+		// -> Panier
+		for($i=1; $i<=10; $i++){
+			$Sql = "INSERT INTO PANIER (id_utilisateur, id_recette) VALUES (1,$i)";
+			query($link,$Sql);
+		}
+
 	}
+
 
 
 	// -- MAIN PROGRAM -- //
