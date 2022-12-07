@@ -70,6 +70,13 @@
         return $link;
 	}
 
+	function disconnectUser(){
+		// Unset all of the session variables
+		$_SESSION = array();
+		// Destroy the session.
+		session_destroy();
+	}
+
     function transformStringToSQLCompatible($link,$string){
 		return mysqli_real_escape_string($link,$string);
 	}
@@ -109,5 +116,23 @@
 		} else {
 			echo "[ERROR] - ".$link->error;
 		}
+	}
+
+	function addToFavorites($id_reciepe, $id_user){
+		if($id_user != -1){
+			$link = connectToDatabase();
+			query($link, "USE BDD_marmiton");
+
+			$sql = 0 ;
+
+		} else {
+			if(isset($_SESSION["favorites"])){
+				array_push($_SESSION["favorites"],$id_reciepe);
+			} else {
+				$array=array(0=>$id_reciepe);
+				$_SESSION["favorites"] = $array;
+			}
+		}
+
 	}
 ?>

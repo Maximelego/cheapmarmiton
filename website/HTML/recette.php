@@ -64,6 +64,23 @@
 			echo "</ul>";
 			echo "<h2>" . "Recette : " . "</h2>";
 			echo "<h3>" . utf8_encode($index[3]) . "</h3>";
+
+			// Close connection
+			mysqli_close($link);
+
+			// -- Favorites -- //
+			// -> if the user is connected
+			if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"]){
+				$id_user = $_SESSION["id"];
+			// -> if the user is not connected
+			} else {
+				$id_user = -1;
+			}
+			echo "<input type=\"button\" value=\"Ajouter aux favoris\" onClick=\"<?php addToFavorites($id,$id_user) ?>\">";
+
 		?>
+
+		
+
 	</body>
 </html>

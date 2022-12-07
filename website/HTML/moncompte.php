@@ -213,6 +213,7 @@
 				</div>
             </form>
             </br>
+            <input type="button" value="Se déconnecter" onclick="<?php disconnectUser() ?>">
         </div>
     </body>
 </html>

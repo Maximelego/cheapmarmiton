@@ -37,32 +37,68 @@
 			</nav>
 		</header>
 
-		<div class="wrapper">
 			<?php
 				$link = connectToDatabase();
 				query($link, "USE $base;");
-
-				$id = $_SESSION["id"];
-				$Sql = "SELECT * FROM PANIER JOIN RECETTES USING (id_recette) WHERE PANIER.id_utilisateur=$id;";
-				$result = query($link, $Sql);
-
-				while ($index = mysqli_fetch_row($result)) {
-
-					echo "<div class=\"box\">";
-					echo "<a href=\"recette.php?id_recette=$index[0]\">";
-					$image_name = scanTitle($index[2]);
-					if (file_exists("../ressources/Photos/$image_name.jpg")) {
-						echo "<img src=\"../ressources/Photos/$image_name.jpg\" alt=\"$image_name\"/>" . "</br>";
-					} else {
-						echo "<img src=\"../ressources/Photos/DEFAULT.png\" alt=\"$image_name\"/>" . "</br>";
+				
+				// -> if the user is connected
+				if(isset($_SESSION["loggedin"])){
+					$id = $_SESSION["id"];
+					$Sql = "SELECT * FROM PANIER JOIN RECETTES USING (id_recette) WHERE PANIER.id_utilisateur=$id;";
+					$result = query($link, $Sql);
+					$count = 0;
+					
+					echo "<div class=\"wrapper\">";
+					while ($index = mysqli_fetch_row($result)) {
+						$count++;
+						echo "<div class=\"box\">";
+						echo "<a href=\"recette.php?id_recette=$index[0]\">";
+						$image_name = scanTitle($index[2]);
+						if (file_exists("../ressources/Photos/$image_name.jpg")) {
+							echo "<img src=\"../ressources/Photos/$image_name.jpg\" alt=\"$image_name\"/>" . "</br>";
+						} else {
+							echo "<img src=\"../ressources/Photos/DEFAULT.png\" alt=\"$image_name\"/>" . "</br>";
+						}
+						echo "<h2>" . utf8_encode($index[2]) . "</h2>" . "</br>";
+						echo "</a>";
+						echo "</div>";
 					}
-					echo "<h2>" . utf8_encode($index[2]) . "</h2>" . "</br>";
-					echo "</a>";
 					echo "</div>";
+					if($count==0){
+						// -- No favorites -- //
+						echo "<h2>Vous n'avez ajouté aucun favoris ! [logged]</h2>";
+					}
+
+				// -> if the user is not connected
+				} else {
+					if(!isset($_SESSION["favorites"]) || (isset($_SESSION["favorites"]) && count($_SESSION["favorites"]) == 0)){
+						// -- No favorites -- //
+						echo "<h2>Vous n'avez ajouté aucun favoris ! </h2>";
+					} else {
+						echo "<div class=\"wrapper\">";
+						foreach($_SESSION["favorites"] as $id_recette){
+							$Sql = "SELECT * FROM RECETTES WHERE id_recette=$id_recette;";
+							$result = query($link, $Sql);
+							$index = mysqli_fetch_row($result);
+
+							echo "<div class=\"box\">";
+							echo "<a href=\"recette.php?id_recette=$index[0]\">";
+							$image_name = scanTitle($index[2]);
+							if (file_exists("../ressources/Photos/$image_name.jpg")) {
+								echo "<img src=\"../ressources/Photos/$image_name.jpg\" alt=\"$image_name\"/>" . "</br>";
+							} else {
+								echo "<img src=\"../ressources/Photos/DEFAULT.png\" alt=\"$image_name\"/>" . "</br>";
+							}
+							echo "<h2>" . utf8_encode($index[2]) . "</h2>" . "</br>";
+							echo "</a>";
+							echo "</div>";
+						}
+						echo "</div>";
+					}
 				}
 				mysqli_close($link);
 			?>
-		</div>
+		
 
 
 
