@@ -73,4 +73,41 @@
     function transformStringToSQLCompatible($link,$string){
 		return mysqli_real_escape_string($link,$string);
 	}
+
+	function update_password($link,$password){
+		$sql = "UPDATE UTILISATEUR SET mdp = ?;";
+		if($stmt = mysqli_prepare($link, $sql)){
+			mysqli_stmt_bind_param($stmt,"s",$param_password);
+			$param_password = password_hash($password,  PASSWORD_DEFAULT);
+			if(mysqli_stmt_execute($stmt)){
+				// Do confirm stuff...
+				// echo "password modified !";
+
+			} else {
+				echo "Oops! Something went wrong. Please try again later.";
+			}
+		} else {
+			echo "[ERROR] - ".$link->error;
+		}
+	}
+
+	function update_id($link, $id){
+		$sql = "UPDATE UTILISATEUR SET pseudo = ?;";
+		if($stmt = mysqli_prepare($link, $sql)){
+			mysqli_stmt_bind_param($stmt,"s",$param_id);
+			$param_id = $id;
+			if(mysqli_stmt_execute($stmt)){
+				// Do confirm stuff...
+				// echo "username modified !";
+
+				// Changing user session
+				$SESSION["username"] = $id;
+
+			} else {
+				echo "Oops! Something went wrong. Please try again later.";
+			}
+		} else {
+			echo "[ERROR] - ".$link->error;
+		}
+	}
 ?>

@@ -85,7 +85,7 @@
 		}
 		
 		// Check input errors before inserting in database
-		if(empty($username_err) && empty($password_err) && empty($confirm_password_err)){
+		if(empty($username_err) && empty($password_err) && empty($confirm_password_err) && empty($mail_err) && empty($name_err) && empty($firstname_err)){
 			
 			// Prepare an insert statement
 			$sql = "INSERT INTO UTILISATEUR (pseudo, mdp, nom, prenom, mail) VALUES (?, ?, ?, ?, ?)";
