@@ -2,23 +2,27 @@
     require "helper.php";
 	// Initialize the session
 	session_start();
-    
-    // Connexion to database
-	$link = connectToDatabase();
-	query($link,"USE $base");
-
-    // Initializing value
-    $changing_id = false;
-    $changing_password = false;
-    if(isset($_POST["action"])){
-        if(strcmp($_POST["action"],"changing_id") == 0){ $changing_id = true; }
-        if(strcmp($_POST["action"],"changing_password") == 0){ $changing_password = true; }
-    }
-
     $ancient_password = $new_password = $new_password_confirm = $username = "";
     $ancient_password_err = $new_password_err = $new_password_confirm_err = $username_err = "";
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){	
+        // Connexion to database
+        $link = connectToDatabase();
+        query($link,"USE $base");
+
+        // Initializing value
+        $changing_id = false;
+        $changing_password = false;
+        $disconnect = false;
+        if(isset($_POST["action"])){
+            if(strcmp($_POST["action"],"changing_id") == 0){ $changing_id = true; }
+            if(strcmp($_POST["action"],"changing_password") == 0){ $changing_password = true; }
+            if(strcmp($_POST["action"],"disconnect") == 0){ $disconnect = true; }
+        }
+
+        if($disconnect){
+            disconnectUser();
+        }
 
         // ---- CONTROLLING THE VALUES ---- //
         if($changing_id){
@@ -137,6 +141,7 @@
         }
         $changing_id = false;
         $changing_password = false;
+        $disconnecting = false;
 		// Close connection
 		mysqli_close($link);
 	}
@@ -172,7 +177,7 @@
         </header>
 
         <div class="fields">
-            <h2>Changer mes informations de connexion</h2>
+            <h1>Changer mes informations de connexion</h1>
 
             <h3>Changer mon identifiant</h3>
             <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
@@ -213,7 +218,10 @@
 				</div>
             </form>
             </br>
-            <input type="button" value="Se déconnecter" onclick="<?php disconnectUser() ?>">
+            <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>" method="post">
+                <input type="hidden" name="action" value="disconnect">
+                <input type="submit" class="btn btn-primary" value="Se déconnecter">
+            </form>
         </div>
     </body>
 </html>

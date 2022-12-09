@@ -27,7 +27,7 @@
 		} else if(strcmp($table,"UTILISATEUR") == 0){
 			$query = "SELECT id_utilisateur FROM $table WHERE (id_utilisateur='$element');";
 		}
-		
+
 		$result = mysqli_query($link, $query);
 		$checkrows = mysqli_num_rows($result);
 		if($checkrows == 0){
@@ -75,6 +75,15 @@
 		$_SESSION = array();
 		// Destroy the session.
 		session_destroy();
+		header("Location: accueil.php");
+		exit();
+	}
+
+	function isUserConnected(){
+		if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"] == true){
+			return true;
+		} 
+		return false;
 	}
 
     function transformStringToSQLCompatible($link,$string){
@@ -118,21 +127,68 @@
 		}
 	}
 
+	function checkIfReciepeInBasket($id_reciepe, $id_user){
+		if($id_user != -1){
+			$link = connectToDatabase();
+			query($link,"USE BDD_marmiton");
+			$query = "SELECT id_utilisateur FROM PANIER WHERE (id_utilisateur='$id_user' AND id_recette='$id_reciepe');";
+			$result = mysqli_query($link, $query);
+			$checkrows = mysqli_num_rows($result);
+			mysqli_close($link);
+
+			return !($checkrows==0);
+		} else {
+			if(!isset($_SESSION["favorites"])){
+				return false;
+			} 
+			foreach($_SESSION["favorites"] as $value){
+				if($value==$id_reciepe){
+					return true;
+				}
+			}
+			return false;
+		}
+	}
+
+
 	function addToFavorites($id_reciepe, $id_user){
+		// -> if user is logged in
 		if($id_user != -1){
 			$link = connectToDatabase();
 			query($link, "USE BDD_marmiton");
+			$Sql = "INSERT INTO PANIER (id_utilisateur, id_recette) VALUES ($id_user,$id_reciepe)";
+			query($link,$Sql);
+			mysqli_close($link);
+		
+		// -> if the user is not logged in
+		} else {
+			if(!isset($_SESSION["favorites"])){
+				$_SESSION["favorites"] = array();
+			}
+			array_push($_SESSION["favorites"],$id_reciepe);
+		}
+		header("Location: favoris.php");
+		exit();
+	}
 
-			$sql = 0 ;
-
+	function removeFromFavorites($id_reciepe, $id_user){
+		if($id_user != -1){
+			$link = connectToDatabase();
+			query($link, "USE BDD_marmiton");
+			$Sql = "DELETE FROM PANIER WHERE $id_user=id_utilisateur AND $id_reciepe=id_recette";
+			query($link,$Sql);
+			mysqli_close($link);
 		} else {
 			if(isset($_SESSION["favorites"])){
-				array_push($_SESSION["favorites"],$id_reciepe);
-			} else {
-				$array=array(0=>$id_reciepe);
-				$_SESSION["favorites"] = $array;
+				foreach($_SESSION["favorites"] as $key => $value){
+					if($value==$id_reciepe){
+						unset($_SESSION["favorites"][$key]);
+						$_SESSION["favorites"] = array_values($_SESSION["favorites"]);
+					}
+				}
 			}
 		}
-
+		header("Location: favoris.php");
+		exit();
 	}
 ?>

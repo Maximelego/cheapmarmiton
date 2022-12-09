@@ -1,6 +1,24 @@
 <?php
+	require "helper.php";
 	// Initialize the session
 	session_start();
+	$connected = isUserConnected();
+
+	if(isset($_POST["add_recette"]) || isset($_POST["remove_recette"])){
+			// -- Favorites -- //
+			// -> if the user is connected
+			if($connected){
+				$id_user = $_SESSION["id"];
+			// -> if the user is not connected
+			} else {
+				$id_user = -1;
+			}
+		if(isset($_POST["add_recette"])){
+			addToFavorites($_POST["add_recette"],$id_user);
+		} else {
+			removeFromFavorites($_POST["remove_recette"],$id_user);
+		}
+	}
 ?>
 
 <!DOCTYPE html>
@@ -11,7 +29,6 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="Style/style.css?v=1">
-		<?php require "helper.php"; ?>
 	</head>
 
 	<body>
@@ -27,7 +44,7 @@
 				</div>
 				<ul>
 					<?php
-						if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+						if(!isUserConnected()){
 							echo "<li><a href=\"connexion.php\"><img src=\"../ressources/Img/icons/login.png\" alt=\"login\" style=\"width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:3px\" />Se connecter</a> </li>";
 						} else {
 							echo "<li><a href=\"moncompte.php\"><img src=\"../ressources/Img/icons/login.png\" alt=\"login\" style=\"width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:3px\" />Mon compte</a> </li>";
@@ -67,20 +84,27 @@
 
 			// Close connection
 			mysqli_close($link);
-
-			// -- Favorites -- //
-			// -> if the user is connected
-			if(isset($_SESSION["loggedin"]) && $_SESSION["loggedin"]){
-				$id_user = $_SESSION["id"];
-			// -> if the user is not connected
-			} else {
-				$id_user = -1;
-			}
-			echo "<input type=\"button\" value=\"Ajouter aux favoris\" onClick=\"<?php addToFavorites($id,$id_user) ?>\">";
-
 		?>
 
-		
-
+		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>" method="POST">
+			
+			<?php 
+				$id_recette = $_GET["id_recette"];
+				if($connected){
+					$id_user = $_SESSION["id"];
+				} else {
+					$id_user = -1;
+				}
+				$elementInBasket = checkIfReciepeinBasket($id_recette,$id_user);
+				if(!$elementInBasket){
+					echo "<input type=\"hidden\" name=\"add_recette\" value=$id_recette>";
+					echo "<input type=\"submit\" value=\"Ajouter aux favoris\">";
+				} else {
+					echo "<input type=\"hidden\" name=\"remove_recette\" value=$id_recette>";
+					echo "<input type=\"submit\" value=\"Retirer des favoris\">";
+				}
+			?>
+			
+		</form>
 	</body>
 </html>

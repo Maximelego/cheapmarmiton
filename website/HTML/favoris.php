@@ -1,6 +1,8 @@
 <?php
+	require "helper.php";
 	// Initialize the session
 	session_start();
+	$connected = isUserConnected();	
 ?>
 
 
@@ -11,7 +13,6 @@
 		<meta charset="UTF-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1.0">
 		<link rel="stylesheet" type="text/css" href="Style/style.css?v=1">
-		<?php require "helper.php"; ?>
 	</head>
 	<body>
 		<header class="main-head">
@@ -26,7 +27,7 @@
 				</div>
 				<ul>
 					<?php
-						if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
+						if(!$connected){
 							echo "<li><a href=\"connexion.php\"><img src=\"../ressources/Img/icons/login.png\" alt=\"login\" style=\"width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:3px\" />Se connecter</a> </li>";
 						} else {
 							echo "<li><a href=\"moncompte.php\"><img src=\"../ressources/Img/icons/login.png\" alt=\"login\" style=\"width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:3px\" />Mon compte</a> </li>";
@@ -37,12 +38,14 @@
 			</nav>
 		</header>
 
+			<h1>Mes Favoris</h1>
+
 			<?php
 				$link = connectToDatabase();
 				query($link, "USE $base;");
 				
 				// -> if the user is connected
-				if(isset($_SESSION["loggedin"])){
+				if($connected){
 					$id = $_SESSION["id"];
 					$Sql = "SELECT * FROM PANIER JOIN RECETTES USING (id_recette) WHERE PANIER.id_utilisateur=$id;";
 					$result = query($link, $Sql);
@@ -66,12 +69,12 @@
 					echo "</div>";
 					if($count==0){
 						// -- No favorites -- //
-						echo "<h2>Vous n'avez ajouté aucun favoris ! [logged]</h2>";
+						echo "<h2>Vous n'avez ajouté aucun favoris !</h2>";
 					}
 
 				// -> if the user is not connected
 				} else {
-					if(!isset($_SESSION["favorites"]) || (isset($_SESSION["favorites"]) && count($_SESSION["favorites"]) == 0)){
+					if(!isset($_SESSION["favorites"]) || (isset($_SESSION["favorites"]) && (is_array($_SESSION["favorites"]) ? count($_SESSION["favorites"]) : 0 )== 0)){
 						// -- No favorites -- //
 						echo "<h2>Vous n'avez ajouté aucun favoris ! </h2>";
 					} else {
@@ -83,13 +86,13 @@
 
 							echo "<div class=\"box\">";
 							echo "<a href=\"recette.php?id_recette=$index[0]\">";
-							$image_name = scanTitle($index[2]);
+							$image_name = scanTitle($index[1]);
 							if (file_exists("../ressources/Photos/$image_name.jpg")) {
 								echo "<img src=\"../ressources/Photos/$image_name.jpg\" alt=\"$image_name\"/>" . "</br>";
 							} else {
 								echo "<img src=\"../ressources/Photos/DEFAULT.png\" alt=\"$image_name\"/>" . "</br>";
 							}
-							echo "<h2>" . utf8_encode($index[2]) . "</h2>" . "</br>";
+							echo "<h2>" . utf8_encode($index[1]) . "</h2>" . "</br>";
 							echo "</a>";
 							echo "</div>";
 						}
