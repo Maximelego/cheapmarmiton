@@ -177,7 +177,6 @@
                 </div>
                 <ul>
                     <?php
-                        session_start();
                         if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
                             echo "<li><a href=\"connexion.php\"><img src=\"../ressources/Img/icons/login.png\" alt=\"login\" style=\"width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:3px\" />Se connecter</a> </li>";
                         } else {

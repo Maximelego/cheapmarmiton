@@ -41,8 +41,6 @@
 
 
     <?php
-        session_start();
-
         // Connexion à la base de données
         $conn = connectToDatabase();
         query($conn, "USE $base;");
@@ -83,13 +81,10 @@
             // gestion de l'erreur ici
             echo "Erreur lors de l'exécution de la requête : " . mysqli_error($conn);
         }
-
         if (mysqli_affected_rows($conn) == 0) {
             // Aucun enregistrement n'a été trouvé
             echo "<h1>Aucun résultat trouvé pour votre recherche.</h1>";
         }
-
-
         // Fermez la connexion à la base de données
         mysqli_close($conn);
     ?>
