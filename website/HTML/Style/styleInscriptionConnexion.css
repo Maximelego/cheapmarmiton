@@ -28,7 +28,6 @@ li{
 }
 
 /* HEADER */
-/* HEADER */
 .main-head{
     background-color: #f98808;
     background-image: linear-gradient(62deg, #f98808 0%, #F7CE68 100%);
@@ -42,22 +41,48 @@ li{
     text-decoration: none;
 }
 
+.container1 {
+    display: flex;
+    align-items: center;
+    align-content: center;
+  }
+  
+  .title {
+    font-size: 4rem;
+    font-family: 'Times New Roman', Times, serif;
+    padding-left: 45%;
+    padding-top: 10%;
+
+  }
+.main-head a{
+    color: #ffffff;
+    text-decoration: none;
+}
+
 nav{
     min-height: 10vh;
     display: flex;
     align-items: center;
     width: 90%;
     margin: auto;
-    padding: 2rem;
+    padding: 1rem;
+    display: flex;
+    justify-content: space-evenly;
 }
 
 nav ul{
     display: flex;
-    flex: 1 1 40rem;
-    justify-content: space-around;
+    flex: 1 1 20rem;
+    justify-content: space-evenly;
     align-items: center;
     list-style: none;
+    flex-direction: column;
 }
+
+.searchbar{
+    margin-left: 25%;
+}
+
 
 .searchbar img{
     vertical-align: middle;
@@ -106,10 +131,12 @@ img{
 
     font-size: 2rem;
     background-color:#FFFFC7;
+    text-align: center;
+
 }
 
 #frm input{
-    vertical-align: middle;
+    
     margin: 10px;
     height: 30px;
     width: 200px;
