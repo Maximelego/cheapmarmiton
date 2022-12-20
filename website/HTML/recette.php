@@ -54,15 +54,6 @@ echo "</ul>";
 echo "<h2>" . "Recette : " . "</h2>";
 echo "<h3>" . utf8_encode($index[3]) . "</h3>";
 
-// -- Ingredients list -- //
-/*echo "<ul>";
-			$Sql = "SELECT * FROM RECETTECONTIENTINGREDIENT INNER JOIN INGREDIENTS USING (id_ingredient) WHERE id_recette=$id;";
-			$result = query($link,$Sql);
-			while($index = mysqli_fetch_row($result)){
-				echo "<li>".$index[2]."</li>"."</br>";
-			}
-			echo "</ul>";*/
-
 ?>
 
 </html>

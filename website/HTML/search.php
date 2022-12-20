@@ -51,7 +51,7 @@ if ($result) {
         }
 
         echo "<ul>";
-        echo "<li>" . $row['titre'] . "</li>";
+        echo "<li>" . utf8_encode($row['titre']). "</li>";
         echo "</ul>";
     }
 } else {
