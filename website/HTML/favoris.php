@@ -17,17 +17,24 @@
 	<body>
 		<header class="main-head">
 			<nav>
-				<div class="header">
-					<img src="../ressources/Img/logoCM4.jpg" alt="logo" />
-				</div>
-				<h1 id="logo">CheapMarmiton</h1>
+				<a href="accueil.php">
+					<div class="header">
+						<img src="../ressources/Img/logoCM4.jpg" alt="logo" />
+					</div>
+					<h1 id="logo">CheapMarmiton</h1>
+				</a>
 				<div class="searchbar">
-					<input type="text">
-					<img src="../ressources/Img/icons/search.png">
+					<form method="POST" action="search.php">
+						<input type="text" name="q" placeholder="Rechercher...">
+						<button type="submit"> 
+							<img src="../ressources/Img/icons/search.png" alt="Rechercher">
+						</button>
+					</form>
 				</div>
 				<ul>
 					<?php
-						if(!$connected){
+						session_start();
+						if(!isset($_SESSION["loggedin"]) || $_SESSION["loggedin"] !== true){
 							echo "<li><a href=\"connexion.php\"><img src=\"../ressources/Img/icons/login.png\" alt=\"login\" style=\"width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:3px\" />Se connecter</a> </li>";
 						} else {
 							echo "<li><a href=\"moncompte.php\"><img src=\"../ressources/Img/icons/login.png\" alt=\"login\" style=\"width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:3px\" />Mon compte</a> </li>";
@@ -38,7 +45,7 @@
 			</nav>
 		</header>
 
-			<h1>Mes Favoris</h1>
+		<h1>Mes Favoris</h1>
 
 			<?php
 				$link = connectToDatabase();
