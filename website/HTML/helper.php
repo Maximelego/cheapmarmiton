@@ -1,6 +1,7 @@
 
 <?php
-    $base="BDD_marmiton";
+	$base="BDD_marmiton";
+    global $base;
 
 	function collectObjectID($link, $object, $table){
 		if(!checkIfElementExists($link, $object, $table)){
@@ -98,7 +99,6 @@
 			if(mysqli_stmt_execute($stmt)){
 				// Do confirm stuff...
 				// echo "password modified !";
-
 			} else {
 				echo "Oops! Something went wrong. Please try again later.";
 			}
@@ -130,7 +130,8 @@
 	function checkIfReciepeInBasket($id_reciepe, $id_user){
 		if($id_user != -1){
 			$link = connectToDatabase();
-			query($link,"USE BDD_marmiton");
+			$b = $GLOBALS["base"];
+			query($link,"USE $b");
 			$query = "SELECT id_utilisateur FROM PANIER WHERE (id_utilisateur='$id_user' AND id_recette='$id_reciepe');";
 			$result = mysqli_query($link, $query);
 			$checkrows = mysqli_num_rows($result);
@@ -155,7 +156,8 @@
 		// -> if user is logged in
 		if($id_user != -1){
 			$link = connectToDatabase();
-			query($link, "USE BDD_marmiton");
+			$b = $GLOBALS["base"];
+			query($link, "USE $b");
 			$Sql = "INSERT INTO PANIER (id_utilisateur, id_recette) VALUES ($id_user,$id_reciepe)";
 			query($link,$Sql);
 			mysqli_close($link);
@@ -174,7 +176,8 @@
 	function removeFromFavorites($id_reciepe, $id_user){
 		if($id_user != -1){
 			$link = connectToDatabase();
-			query($link, "USE BDD_marmiton");
+			$b = $GLOBALS["base"];
+			query($link, "USE $b");
 			$Sql = "DELETE FROM PANIER WHERE $id_user=id_utilisateur AND $id_reciepe=id_recette";
 			query($link,$Sql);
 			mysqli_close($link);

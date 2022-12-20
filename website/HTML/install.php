@@ -14,7 +14,7 @@
 	}
 
 	function buildDatabase($link){
-		$base="BDD_Marmiton";
+		$base=$GLOBALS["base"];
 		$Sql="DROP DATABASE IF EXISTS $base;
 			CREATE DATABASE $base;
 			USE $base;
