@@ -13,12 +13,14 @@
 <?php
 // Connexion à la base de données
 $conn = connectToDatabase();
-query($conn, "USE $base;");
 
 // Vérification de la connexion
 if (!$conn) {
     die("Erreur de connexion : " . mysqli_connect_error());
 }
+query($conn, "USE $base;");
+
+
 
 // Récupérez la chaîne de recherche à partir des données POST et protégez-la contre les injections SQL
 $search_query = mysqli_real_escape_string($conn, $_POST['q']);
@@ -30,9 +32,8 @@ $sql = "SELECT * FROM RECETTES WHERE titre LIKE '%$search_query%' OR ingredients
 $result = mysqli_query($conn, $sql);
 
 if ($result) {
-    $width = 250;
-    $height = 250;
-    echo "Résultats trouvé pour la recherche " . $_POST['q'] . ": ";
+    $width = $height = 250;
+    echo "<h1>Résultats trouvé pour la recherche " . $_POST['q'] . ": </h1>";
     while ($row = mysqli_fetch_assoc($result)) {
         // traitement des lignes retournées ici
 
@@ -60,7 +61,7 @@ if ($result) {
 
 if (mysqli_affected_rows($conn) == 0) {
     // Aucun enregistrement n'a été trouvé
-    echo "Aucun résultat trouvé pour votre recherche.";
+    echo "<h1>Aucun résultat trouvé pour votre recherche.</h1>";
 }
 
 
