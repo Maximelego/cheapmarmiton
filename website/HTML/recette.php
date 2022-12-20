@@ -55,7 +55,7 @@ $image_name = scanTitle($index[1]);
 if (file_exists("../ressources/Photos/$image_name.jpg")) {
 	echo "<img src=\"../ressources/Photos/$image_name.jpg\" alt=\"$image_name\"/>" . "</br>";
 } else {
-	echo "<img src=\"../ressources/Photos/DEFAULT.png\" alt=\"DEFAULT\"/>";
+	echo "<img src=\"../ressources/Img/DEFAULT.png\" alt=\"DEFAULT\"/>";
 }
 echo "<h2>" . "Ingrédients : " . "</h2>";
 echo "<ul>";

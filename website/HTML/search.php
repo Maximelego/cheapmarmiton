@@ -69,7 +69,7 @@
                 } else {
                     echo "<div class=\"box\">";
                     echo "<a href='recette.php?id_recette={$row['id_recette']}'>";
-                    echo "<img src=\"../ressources/Photos/DEFAULT.png\" alt=\"$image_name\"/ width=\"$width\" height=\"$height\">" . "</br>";
+                    echo "<img src=\"../ressources/Img/DEFAULT.png\" alt=\"$image_name\"/ width=\"$width\" height=\"$height\">" . "</br>";
                     echo "</div>";
                 }
 
