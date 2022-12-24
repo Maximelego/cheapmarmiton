@@ -68,6 +68,7 @@
 
 	function connectToDatabase(){
         $link = mysqli_connect('127.0.0.1', 'root', '') or die("Erreur de connexion");
+		$link->set_charset("utf8mb4");
         return $link;
 	}
 

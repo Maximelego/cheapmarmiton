@@ -16,7 +16,7 @@
 	function buildDatabase($link){
 		$base=$GLOBALS["base"];
 		$Sql="DROP DATABASE IF EXISTS $base;
-			CREATE DATABASE $base;
+			CREATE DATABASE $base CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 			USE $base;
 			CREATE TABLE INGREDIENTS(
 				id_ingredient INT PRIMARY KEY AUTO_INCREMENT,
@@ -157,18 +157,12 @@
 
 	// -- MAIN PROGRAM -- //
 	$link=connectToDatabase();
-	/* Modification du jeu de résultats en utf8mb4 */
-	if($link->set_charset("UTF8")){
-		#Creation of database
-		buildDatabase($link);
-		#Adding data
-		implementData($link, $Recettes, $Hierarchie);
-	} else {
-		// -- DEBUG
-		//printf("Jeu de caractère initial : %s\n", $link->character_set_name());
-		echo "[ERREUR] - Impossible de changer le jeu de caractères... Abandon ...";
-	}
+	#Creation of database
+	buildDatabase($link);
+	#Adding data
+	implementData($link, $Recettes, $Hierarchie);
 	echo "<h1>"."Database installation successful !"."</h1>";
+
 	mysqli_close($link);
 	// ----------------- //
 
