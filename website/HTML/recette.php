@@ -51,7 +51,7 @@
 	$index = mysqli_fetch_row($result);
 
 	// -- Classical values -- //
-	echo "<h1>" . utf8_encode($index[1]) . "</h1>";
+	echo "<h1>" . $index[1] . "</h1>";
 
 	$image_name = scanTitle($index[1]);
 	if (file_exists("./ressources/Photos/$image_name.jpg")) {
@@ -62,11 +62,11 @@
 	echo "<h2>" . "Ingrédients : " . "</h2>";
 	echo "<ul>";
 	foreach (explode("|", $index[2]) as $str) {
-		echo "<li>" . utf8_encode($str) . "</li>";
+		echo "<li>" . $str . "</li>";
 	}
 	echo "</ul>";
 	echo "<h2>" . "Recette : " . "</h2>";
-	echo "<h3>" . utf8_encode($index[3]) . "</h3>";
+	echo "<h3>" . $index[3] . "</h3>";
 
 	?>
 </body>

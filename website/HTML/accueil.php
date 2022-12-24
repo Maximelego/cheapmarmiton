@@ -57,7 +57,7 @@
 				echo "<div class=\"box\">";
 				echo "<a href=\"recette.php?id_recette=$index[0]\">";
 				echo "<img src=\"./ressources/Photos/$image_name.jpg\" alt=\"$image_name\"/>" . "</br>";
-				echo "<h2>" . utf8_encode($index[1]) . "</h2>" . "</br>";
+				echo "<h2>" . $index[1] . "</h2>" . "</br>";
 				echo "</a>";
 				echo "</div>";
 			}

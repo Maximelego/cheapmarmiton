@@ -72,7 +72,7 @@ $connected = isUserConnected();
 			} else {
 				echo "<img src=\"./ressources/Img/DEFAULT.png\" alt=\"$image_name\"/>" . "</br>";
 			}
-			echo "<h2>" . utf8_encode($index[2]) . "</h2>" . "</br>";
+			echo "<h2>" . $index[2] . "</h2>" . "</br>";
 			echo "</a>";
 			echo "</div>";
 		}
@@ -102,7 +102,7 @@ $connected = isUserConnected();
 				} else {
 					echo "<img src=\"./ressources/Img/DEFAULT.png\" alt=\"$image_name\"/>" . "</br>";
 				}
-				echo "<h2>" . utf8_encode($index[1]) . "</h2>" . "</br>";
+				echo "<h2>" . $index[1] . "</h2>" . "</br>";
 				echo "</a>";
 				echo "</div>";
 			}

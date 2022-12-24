@@ -61,9 +61,9 @@
 			"è", "é", "ê", "ë", "ì", "í", "î", "ï", "ð", "ñ", "ò", "ó", "ô", "õ",
 			"ö", "ø", "ù", "ú", "û", "ý", "þ", "ÿ"
 		);
-		$formattedTitle = str_replace($unwanted_array,$wanted_array,utf8_encode($title));
+		$formattedTitle = str_replace($unwanted_array,$wanted_array,$title);
 		$formattedTitle = str_replace(" ","_", $formattedTitle);
-        return utf8_encode($formattedTitle);
+        return $formattedTitle;
     }
 
 	function connectToDatabase(){

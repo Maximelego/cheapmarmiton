@@ -168,6 +168,7 @@
 		//printf("Jeu de caractère initial : %s\n", $link->character_set_name());
 		echo "[ERREUR] - Impossible de changer le jeu de caractères... Abandon ...";
 	}
+	echo "<h1>"."Database installation successful !"."</h1>";
 	mysqli_close($link);
 	// ----------------- //
 
