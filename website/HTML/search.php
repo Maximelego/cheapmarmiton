@@ -57,9 +57,7 @@
     $result = mysqli_query($conn, $sql);
 
     if ($result) {
-        $width = $height = 250;
         echo "<h1>Recettes trouvées pour les mots clés : " . $_POST['q'] . "</h1>";
-
         echo "<div class=\"wrapper\">";
         while ($row = mysqli_fetch_assoc($result)) {
             // traitement des lignes retournées ici

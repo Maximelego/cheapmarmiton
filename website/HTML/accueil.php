@@ -43,7 +43,7 @@
 	</header>
 
 
-
+	<h1>Nos meilleurs cocktails</h1>
 	<div class="wrapper">
 		<?php
 		$link = connectToDatabase();

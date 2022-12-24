@@ -129,7 +129,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<title>Cheap Marmiton | Recettes de cocktails</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" href="Style/styleInscriptionConnexion.css?v=1">
+	<link rel="stylesheet" type="text/css" href="Style/style.css?v=1.1">
 </head>
 
 <body>
@@ -165,7 +165,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		</nav>
 	</header>
 
-	<div class="wrapper">
+	<div class="formulaire">
 		<h1>Inscription</h1>
 		<p>Veuillez remplir ce formulaire afin de créer un compte.</p>
 		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">

@@ -195,7 +195,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </nav>
     </header>
 
-    <div class="fields">
+    <div class="formulaire">
         <h1>Changer mes informations de connexion</h1>
 
         <h3>Changer mon identifiant</h3>

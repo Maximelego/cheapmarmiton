@@ -1,4 +1,3 @@
-/* GLOBAL CSS */
 
 *{
     margin:0;
@@ -8,9 +7,10 @@
 html{
     font-size: 62.5%;
 }
-h1{
+h1 {
     font-size: 4rem;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Arial Black', serif;
+    text-align: center;
 }
 h2{
     font-size: 2rem;
@@ -47,13 +47,13 @@ li{
     align-content: center;
   }
   
-  .title {
+.title {
     font-size: 4rem;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Arial', serif;
     padding-left: 45%;
-    padding-top: 10%;
+    padding-top: 5%;
+}
 
-  }
 .main-head a{
     color: #ffffff;
     text-decoration: none;

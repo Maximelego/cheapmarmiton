@@ -2,17 +2,12 @@
 
 *{
     margin:0;
-    padding: 0;
+    padding:0;
     font-family: Arial;
     box-sizing: border-box;
 }
 html{
     font-size: 62.5%;
-}
-h1{
-    font-size: 4rem;
-    font-family: 'Times New Roman', Times, serif;
-    padding-bottom: 0.5%;
 }
 h2{
     font-size: 2rem;
@@ -44,15 +39,20 @@ li{
     align-content: center;
   }
   
-  .title {
+.title {
     font-size: 4rem;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: 'Arial', Times, serif;
     padding-left: 45%;
     padding-top: 10%;
-
   }
+
 .main-head a{
     color: #ffffff;
+    text-decoration: none;
+}
+
+a {
+    color: #2b2b2b;
     text-decoration: none;
 }
 
@@ -76,21 +76,25 @@ nav ul{
     flex-direction: column;
 }
 
-.searchbar{
+
+
+.searchbar {
     margin-left: 25%;
 }
-
-
 .searchbar img{
     vertical-align: middle;
-    width: 30px;
-    height:30px;
+    width: 25px;
+    height:25px;
 }
 .searchbar input{
-    margin: 10px;
     height: 30px;
-    width: 300px;
+    width: 75%;
     border-radius: 7px;
+}
+.searchbar button{
+    height: 40px;
+    width: 50px;
+    border-radius: 2dpx;
 }
 
 #logo{
@@ -106,26 +110,59 @@ nav ul{
 }
 
 img{
-    width: 250px;
-    height: 250px;
+    width: 300px;
+    height: 300px;
     border-radius:8px;
 }
+
+
 .wrapper {
     display: grid;
-    grid-template-columns: 300px 300px 300px 300px;
-    grid-gap: 10px;
+    grid-template-columns: repeat(auto-fit, minmax(350px,1fr));
+    grid-gap: 32px;
     justify-content: center;
     align-items: center;
 }
-
 .box{
-    border-radius: 10px;
-    margin-top: 30px;
+    grid-column: span 1;
+    border-radius: 20px;
+    margin-top: 10px;
     padding: 10px;
-    font-size: 150%;
+    font-size: 100%;
     align-self: center;
     justify-self: center;
-   
+    justify-content: center;
+    background-color: rgb(199, 199, 199);
 }
+.box h2{
+    width: 300px;
+    height: 50px;
+}
+
+h1 {
+    font-size: 4rem;
+    font-family: 'Arial Black', serif;
+    text-align: center;
+}
+
+
+/*----- Formulaires ----*/
+.formulaire{
+    margin: 5%;
+    margin-left: 25%;
+    margin-right: 25%;
+    padding: 2%;
+
+    background-color: #F7CE68;
+    border-color: #2b2b2b;
+    border-radius: 20px;
+    border-style: solid;
+    border-width: 3px;
+}
+
+
+
+
+
 
 

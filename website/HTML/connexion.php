@@ -96,7 +96,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	<title>Cheap Marmiton | Recettes de cocktails</title>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
-	<link rel="stylesheet" type="text/css" href="Style/styleInscriptionConnexion.css? ">
+	<link rel="stylesheet" type="text/css" href="Style/style.css?v=1">
 	<meta http-equiv="Cache-control" content="no-cache">
 
 </head>
@@ -126,14 +126,13 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 					echo "<li><a href=\"connexion.php\"><img src=\"./ressources/Img/icons/login.png\" alt=\"login\" style=\"width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:3px\" />Se connecter</a> </li>";
 				} else {
 					echo "<li><a href=\"moncompte.php\"><img src=\"./ressources/Img/icons/login.png\" alt=\"login\" style=\"width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:3px\" />Mon compte</a> </li>";
-				}
-				?>
+				}?>
 				<li><a href="favoris.php"><img src="./ressources/Img/icons/favoris.png" alt="favoris" style="width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:10px" />Mes favoris</a> </li>
 			</ul>
 		</nav>
 	</header>
 
-	<div id="frm">
+	<div class="formulaire">
 		<h1>Connexion</h1>
 		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 			<div class="form-group">
