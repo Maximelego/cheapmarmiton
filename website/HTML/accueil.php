@@ -53,13 +53,8 @@
 
 		while ($index = mysqli_fetch_row($result)) {
 			$image_name = scanTitle($index[1]);
-			if (file_exists("./ressources/Photos/$image_name.jpg")) {
-				echo "<div class=\"box\">";
-				echo "<a href=\"recette.php?id_recette=$index[0]\">";
-				echo "<img src=\"./ressources/Photos/$image_name.jpg\" alt=\"$image_name\"/>" . "</br>";
-				echo "<h2>" . $index[1] . "</h2>" . "</br>";
-				echo "</a>";
-				echo "</div>";
+			if(file_exists("./ressources/Photos/$image_name.jpg")){
+				displayReciepeList($image_name, $index[0], $index[1]);
 			}
 		}
 		mysqli_close($link);

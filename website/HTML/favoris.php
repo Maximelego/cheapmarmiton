@@ -64,17 +64,8 @@ $connected = isUserConnected();
 		echo "<div class=\"wrapper\">";
 		while ($index = mysqli_fetch_row($result)) {
 			$count++;
-			echo "<div class=\"box\">";
-			echo "<a href=\"recette.php?id_recette=$index[0]\">";
 			$image_name = scanTitle($index[2]);
-			if (file_exists("./ressources/Photos/$image_name.jpg")) {
-				echo "<img src=\"./ressources/Photos/$image_name.jpg\" alt=\"$image_name\"/>" . "</br>";
-			} else {
-				echo "<img src=\"./ressources/Img/DEFAULT.png\" alt=\"$image_name\"/>" . "</br>";
-			}
-			echo "<h2>" . $index[2] . "</h2>" . "</br>";
-			echo "</a>";
-			echo "</div>";
+			displayReciepeList($image_name,$index[0],$index[2]);
 		}
 		echo "</div>";
 		if ($count == 0) {
@@ -93,29 +84,14 @@ $connected = isUserConnected();
 				$Sql = "SELECT * FROM RECETTES WHERE id_recette=$id_recette;";
 				$result = query($link, $Sql);
 				$index = mysqli_fetch_row($result);
-
-				echo "<div class=\"box\">";
-				echo "<a href=\"recette.php?id_recette=$index[0]\">";
 				$image_name = scanTitle($index[1]);
-				if (file_exists("./ressources/Photos/$image_name.jpg")) {
-					echo "<img src=\"./ressources/Photos/$image_name.jpg\" alt=\"$image_name\"/>" . "</br>";
-				} else {
-					echo "<img src=\"./ressources/Img/DEFAULT.png\" alt=\"$image_name\"/>" . "</br>";
-				}
-				echo "<h2>" . $index[1] . "</h2>" . "</br>";
-				echo "</a>";
-				echo "</div>";
+				displayReciepeList($image_name,$index[0],$index[1]);
 			}
 			echo "</div>";
 		}
 	}
 	mysqli_close($link);
 	?>
-
-
-
-
-
 </body>
 
 </html>

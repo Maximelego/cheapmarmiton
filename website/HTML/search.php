@@ -58,34 +58,22 @@
 
     if ($result) {
         $width = $height = 250;
-        echo "<h1>Résultats trouvé pour la recherche " . $_POST['q'] . ": </h1>";
+        echo "<h1>Recettes trouvées pour les mots clés : " . $_POST['q'] . "</h1>";
+
+        echo "<div class=\"wrapper\">";
         while ($row = mysqli_fetch_assoc($result)) {
             // traitement des lignes retournées ici
-
             $image_name = scanTitle($row['titre']);
-            if (file_exists("./ressources/Photos/$image_name.jpg")) {
-                echo "<div class=\"box\">";
-                echo "<a href='recette.php?id_recette={$row['id_recette']}'>";
-                echo "<img src=\"./ressources/Photos/$image_name.jpg\" alt=\"$image_name\"/ width=\"$width\" height=\"$height\">" . "</br>";
-                echo "</div>";
-            } else {
-                echo "<div class=\"box\">";
-                echo "<a href='recette.php?id_recette={$row['id_recette']}'>";
-                echo "<img src=\"./ressources/Img/DEFAULT.png\" alt=\"$image_name\"/ width=\"$width\" height=\"$height\">" . "</br>";
-                echo "</div>";
-            }
-
-            echo "<ul>";
-            echo "<li>" . $row['titre'] . "</li>";
-            echo "</ul>";
+            displayReciepeList($image_name, $row['id_recette'], $row['titre']);
         }
+        echo "</div>";
     } else {
         // gestion de l'erreur ici
         echo "Erreur lors de l'exécution de la requête : " . mysqli_error($conn);
     }
     if (mysqli_affected_rows($conn) == 0) {
         // Aucun enregistrement n'a été trouvé
-        echo "<h1>Aucun résultat trouvé pour votre recherche.</h1>";
+        echo "<h1>Aucun résultat.</h1>";
     }
     // Fermez la connexion à la base de données
     mysqli_close($conn);

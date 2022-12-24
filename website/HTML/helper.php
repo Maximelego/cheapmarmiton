@@ -195,4 +195,19 @@
 		header("Location: favoris.php");
 		exit();
 	}
+
+	function displayReciepeList($image_name, $id_reciepe, $title){
+		echo "<div class=\"box\">";
+		echo "<a href=\"recette.php?id_recette=$id_reciepe\">";
+		// Comparaison avec la liste d'images disponibles.
+		if(file_exists("./ressources/Photos/$image_name.jpg")){
+			echo "<img src=\"./ressources/Photos/$image_name.jpg\" alt=\"$image_name\"/>" . "</br>";
+		} else {
+			echo "<img src=\"./ressources/Img/DEFAULT.png\" alt=\"DEFAULT\"/>" . "</br>";
+		}
+		echo "<h2>" . $title . "</h2>" . "</br>";
+		echo "</a>";
+		echo "</div>";
+	}
+
 ?>
