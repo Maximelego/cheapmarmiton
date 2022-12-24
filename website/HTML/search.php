@@ -48,16 +48,36 @@
     $conn = connectToDatabase();
     query($conn, "USE $base;");
 
-    // Récupérez la chaîne de recherche à partir des données POST et protégez-la contre les injections SQL 
-    // (Il y a déjà une fonction pour ça dans helper.php)
-    $search_query = transformStringToSQLCompatible($conn,$_POST['q']);
+    $stringCompiled ="";
+    $count = 0;
+    $sql = "SELECT * FROM RECETTES WHERE ";
 
-    // Créez une requête SQL pour récupérer les données de la base de données qui correspondent à la chaîne de recherche
-    $sql = "SELECT * FROM RECETTES WHERE titre LIKE '%$search_query%' OR ingredients LIKE '%$search_query%'";
+    foreach(explode(" ",$_POST["q"]) as $string){
+        $search_query = transformStringToSQLCompatible($conn,$string);
+        if($count != 0){
+            $sql .= " OR ";
+            $stringCompiled .= ", " . $string;
+        } else {
+            $stringCompiled .= $string;
+        }
+        $sql .= "titre LIKE '%$search_query%' OR ingredients LIKE '%$search_query%'";
+        $count++;
+    }
+    $sql .= ";";
+
+    //echo "$sql";
+
     $result = mysqli_query($conn, $sql);
 
     if ($result) {
-        echo "<h1>Recettes trouvées pour les mots clés : " . $_POST['q'] . "</h1>";
+        $title = "<h1>" . mysqli_affected_rows($conn);
+        if(mysqli_affected_rows($conn)>1){
+            $title .= " recettes trouvées pour les mots clés " . $stringCompiled . "</h1>";
+        } else {
+            $title .= " recette trouvée pour les mots clés " . $stringCompiled . "</h1>";
+        }
+        echo $title;
+
         echo "<div class=\"wrapper\">";
         while ($row = mysqli_fetch_assoc($result)) {
             // traitement des lignes retournées ici
@@ -73,6 +93,7 @@
         // Aucun enregistrement n'a été trouvé
         echo "<h1>Aucun résultat.</h1>";
     }
+
     // Fermez la connexion à la base de données
     mysqli_close($conn);
     ?>
