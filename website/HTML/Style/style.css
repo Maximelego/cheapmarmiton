@@ -122,6 +122,8 @@ img{
     grid-gap: 32px;
     justify-content: center;
     align-items: center;
+    margin-left: 10%;
+    margin-right: 10%;
 }
 .box{
     grid-column: span 1;
@@ -143,6 +145,8 @@ h1 {
     font-size: 4rem;
     font-family: 'Arial Black', serif;
     text-align: center;
+    margin-top: 2%;
+    margin-bottom: 2%;
 }
 
 
