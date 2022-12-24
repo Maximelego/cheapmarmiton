@@ -48,13 +48,12 @@
     $conn = connectToDatabase();
     query($conn, "USE $base;");
 
-    // Récupérez la chaîne de recherche à partir des données POST et protégez-la contre les injections SQL
-    $search_query = mysqli_real_escape_string($conn, $_POST['q']);
+    // Récupérez la chaîne de recherche à partir des données POST et protégez-la contre les injections SQL 
+    // (Il y a déjà une fonction pour ça dans helper.php)
+    $search_query = transformStringToSQLCompatible($conn,$_POST['q']);
 
     // Créez une requête SQL pour récupérer les données de la base de données qui correspondent à la chaîne de recherche
     $sql = "SELECT * FROM RECETTES WHERE titre LIKE '%$search_query%' OR ingredients LIKE '%$search_query%'";
-
-    // Exécutez la requête et récupérez les résultats
     $result = mysqli_query($conn, $sql);
 
     if ($result) {
