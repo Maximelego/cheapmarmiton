@@ -6,8 +6,8 @@ $link = connectToDatabase();
 query($link, "USE $base");
 
 // Define variables and initialize with empty values
-$username = $password = $confirm_password = $name = $firstname = $mail = "";
-$username_err = $password_err = $confirm_password_err = $name_err = $firstname_err = $mail_err = "";
+$username = $password = $confirm_password = $name = $firstname = $mail = $sex = $num_rue = $nom_rue = $ville = $code_postal = "";
+$username_err = $password_err = $confirm_password_err = $mail_err = $address_err = "";
 
 // Processing form data when form is submitted
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -65,35 +65,40 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		}
 	}
 
-	// Validate Mail
-	if (empty(trim($_POST["mail"]))) {
-		$mail_err = "Veuillez saisir une adresse mail.";
-	} else {
-		$mail = trim($_POST["mail"]);
-	}
-	// Validate Name
-	if (empty(trim($_POST["name"]))) {
-		$name_err = "Veuillez entrer un nom.";
-	} else {
-		$name = trim($_POST["name"]);
-	}
-	// Validate Firstname
-	if (empty(trim($_POST["firstname"]))) {
-		$firstname_err = "Veuillez entrer un prénom.";
-	} else {
-		$firstname = trim($_POST["firstname"]);
-	}
+	$name = trim($_POST["name"]);
+    $firstname = trim($_POST["firstname"]);
+    $mail = trim($_POST["mail"]);
+    if(!empty($mail)){
+        // Checking if the mail doesn't already exist
+        $sql = "SELECT * FROM UTILISATEUR WHERE mail='". transformStringToSQLCompatible($link,$mail) ."';";
+        query($link,$sql);
+        $checkrows = mysqli_num_rows($result);
+        if($checkrows != 0){
+            $mail_err = "Cette adresse mail est déjà utilisée.";
+        }
+    }
+	
+    $sexe = trim($_POST["sex"]);
+
+    // Validate address
+    $num_rue = trim($_POST["num_rue"]);
+    $nom_rue = trim($_POST["nom_rue"]);
+    $ville = trim($_POST["ville"]);
+    $code_postal = trim($_POST["code_postal"]);
+    if((empty($num_rue) || empty($nom_rue) || empty($ville) || empty($code_postal)) && !(empty($num_rue) && empty($nom_rue) && empty($ville) && empty($code_postal))){
+        $address_err = "Veuillez saisir une adresse complète.";
+    }
 
 	// Check input errors before inserting in database
-	if (empty($username_err) && empty($password_err) && empty($confirm_password_err) && empty($mail_err) && empty($name_err) && empty($firstname_err)) {
+	if (empty($username_err) && empty($password_err) && empty($confirm_password_err) && empty($mail_err)) {
 
 		// Prepare an insert statement
-		$sql = "INSERT INTO UTILISATEUR (pseudo, mdp, nom, prenom, mail) VALUES (?, ?, ?, ?, ?)";
+		$sql = "INSERT INTO UTILISATEUR (pseudo, mdp, nom, prenom, mail, sexe, num_rue, nom_rue, ville, code_postal) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 
 		if ($stmt = mysqli_prepare($link, $sql)) {
 			// Bind variables to the prepared statement as parameters
-			mysqli_stmt_bind_param($stmt, "sssss", $param_username, $param_password, $param_name, $param_firstname, $param_mail);
+			mysqli_stmt_bind_param($stmt, "ssssssissi", $param_username, $param_password, $param_name, $param_firstname, $param_mail, $param_sexe, $param_num_rue, $param_nom_rue, $param_ville, $param_code_postal);
 
 			// Set parameters
 			$param_username = $username;
@@ -101,9 +106,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			$param_name = $name;
 			$param_firstname = $firstname;
 			$param_mail = $mail;
+			$param_sexe = $sexe;
+			$param_num_rue = $num_rue;
+			$param_nom_rue = $nom_rue;
+			$param_ville = $ville;
+			$param_code_postal = $code_postal;
+
 
 			// Attempt to execute the prepared statement
 			if (mysqli_stmt_execute($stmt)) {
+				mysqli_stmt_close($stmt);
 				// Redirect to login page
 				header("Location: connexion.php");
 			} else {
@@ -191,13 +203,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 			</div>
 			<div class="form-group">
 				<label>Nom</label>
-				<input type="text" name="name" class="form-control <?php echo (!empty($name_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $name; ?>">
-				<span class="invalid-feedback"><?php echo $name_err; ?></span>
+				<input type="text" name="name" value="<?php echo $name; ?>">
 			</div>
 			<div class="form-group">
 				<label>Prénom</label>
-				<input type="text" name="firstname" class="form-control <?php echo (!empty($firstname_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $firstname; ?>">
-				<span class="invalid-feedback"><?php echo $firstname_err; ?></span>
+				<input type="text" name="firstname" value="<?php echo $firstname; ?>">
+			</div>
+			<div class="form-group">
+				<label>Femme</label>
+				<input type="radio" name="sex" value="woman">
+				<label>Homme</label>
+				<input type="radio" name="sex" value="man">
+				<label>Autre</label>
+				<input type="radio" name="sex" value="other" checked="checked">
+			</div>
+			<div class="form-group">
+				<label>Numéro de rue</label>
+				<input type="number" name="num_rue" value="<?php echo $num_rue; ?>">
+				<label>Nom de la rue</label>
+				<input type="text" name="nom_rue" value="<?php echo $nom_rue;?>">
+				<label>Ville</label>
+				<input type="text" name="ville" value="<?php echo $ville; ?>">
+				<label>Code Postal</label>
+				<input type="number" name="code_postal" value="<?php echo $code_postal; ?>">
+				<span class="invalid-feedback"><?php echo $address_err; ?></span>
 			</div>
 			<div class="form-group">
 				<input type="submit" class="btn btn-primary" value="S'inscrire">

@@ -2,8 +2,8 @@
 require "helper.php";
 // Initialize the session
 session_start();
-$ancient_password = $new_password = $new_password_confirm = $username = "";
-$ancient_password_err = $new_password_err = $new_password_confirm_err = $username_err = "";
+$ancient_password = $new_password = $new_password_confirm = $username = $name = $firstname = $mail = $sex = $num_rue = $nom_rue = $ville = $code_postal = "";
+$ancient_password_err = $new_password_err = $new_password_confirm_err = $username_err = $mail_err = $address_err = "";
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Connexion to database
@@ -13,6 +13,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Initializing value
     $changing_id = false;
     $changing_password = false;
+    $changing_personnal_infos = false;
     $disconnect = false;
     if (isset($_POST["action"])) {
         if (strcmp($_POST["action"], "changing_id") == 0) {
@@ -20,6 +21,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         if (strcmp($_POST["action"], "changing_password") == 0) {
             $changing_password = true;
+        }
+        if (strcmp($_POST["action"], "changing_personnal_infos") == 0) {
+            $changing_personnal_infos = true;
         }
         if (strcmp($_POST["action"], "disconnect") == 0) {
             $disconnect = true;
@@ -68,6 +72,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 echo "[ERROR] - " . $link->error;
             }
         }
+
     } else if ($changing_password) {
 
         // Validate password
@@ -134,7 +139,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             $ancient_password_err = "Renseignez votre ancien mot de passe.";
         }
+    } else if($changing_personnal_infos){
+        // -- Changing personnal infos -- //
+        $name = trim($_POST["name"]);
+        $firstname = trim($_POST["firstname"]);
+        $mail = trim($_POST["mail"]);
+        if(!empty($mail)){
+            // Checking if the mail doesn't already exist
+            $sql = "SELECT * FROM UTILISATEUR WHERE mail='". transformStringToSQLCompatible($link,$mail) ."';";
+            $result = query($link,$sql);
+            $checkrows = mysqli_num_rows($result);
+            if($checkrows != 0){
+                $mail_err = "Cette adresse mail est déjà utilisée.";
+            }
+        }
+
+        $sex = trim($_POST["sex"]);
+
+        // Validate address
+        $num_rue = trim($_POST["num_rue"]);
+        $nom_rue = trim($_POST["nom_rue"]);
+        $ville = trim($_POST["ville"]);
+        $code_postal = trim($_POST["code_postal"]);
+        if((empty($num_rue) || empty($nom_rue) || empty($ville) || empty($code_postal)) && !(empty($num_rue) && empty($nom_rue) && empty($ville) && empty($code_postal))){
+            $address_err = "Veuillez saisir une adresse complète.";
+        }
+
+        if(empty($mail_err && empty($address_err))){
+            $personnal_infos = array(
+                "name" => $name,
+                "firstname" => $firstname,
+                "mail" => $mail,
+                "sex" => $sex,
+                "num_rue" => $num_rue,
+                "nom_rue" => $nom_rue,
+                "ville" => $ville,
+                "code_postal" => $code_postal
+            );
+        }
     }
+
 
 
     // ---- UPDATING VALUES ---- //
@@ -143,9 +187,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         update_id($link, $username);
     } else if ($changing_password && empty($ancient_password_err) && empty($new_password_confirm_err) && empty($new_password_err)) {
         update_password($link, $new_password);
+    } else if ($changing_personnal_infos && empty($mail_err) && empty($address_err)) {
+        update_personnal_infos($link,$personnal_infos);
     }
     $changing_id = false;
     $changing_password = false;
+    $changing_personnal_infos = false;
     $disconnecting = false;
     // Close connection
     mysqli_close($link);
@@ -195,16 +242,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </nav>
     </header>
 
-    <div class="formulaire">
-        <h1>Changer mes informations de connexion</h1>
+    <div class="personnal_infos_display">
+        <!-- display for registered personnal infos -->
 
-        <h3>Changer mon identifiant</h3>
+    </div>
+    <div class="formulaire">
+        <h1>Modifier mes informations de connexion</h1>
+
+        <h3>Modifier mon identifiant</h3>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <!-- Formulaire de modification de l'identifiant -->
             <input type="hidden" name="action" value="changing_id">
             <div class="form-group">
                 <label>Nouvel identifiant</label>
-                <input type="text" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>">
+                <input type="text" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
                 <span class="invalid-feedback"><?php echo $username_err; ?></span>
             </div>
             <div class="form-group">
@@ -213,27 +264,62 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         </form>
         </br>
 
-        <h3>Changer mon mot de passe</h3>
+        <h3>Modifier mon mot de passe</h3>
         <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
             <!-- Formulaire de modification de mot de passe -->
             <input type="hidden" name="action" value="changing_password">
             <div class="form-group">
                 <label>Ancien mot de passe</label>
-                <input type="password" name="ancient_password" class="form-control <?php echo (!empty($ancient_password_err)) ? 'is-invalid' : ''; ?>">
+                <input type="password" name="ancient_password" class="form-control <?php echo (!empty($ancient_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $ancient_password; ?>">
                 <span class="invalid-feedback"><?php echo $ancient_password_err; ?></span>
             </div>
             <div class="form-group">
                 <label>Nouveau mot de passe</label>
-                <input type="password" name="new_password" class="form-control <?php echo (!empty($new_password_err)) ? 'is-invalid' : ''; ?>">
+                <input type="password" name="new_password" class="form-control <?php echo (!empty($new_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $new_password; ?>">
                 <span class="invalid-feedback"><?php echo $new_password_err; ?></span>
             </div>
             <div class="form-group">
                 <label>Confirmation nouveau mot de passe</label>
-                <input type="password" name="new_password_confirm" class="form-control <?php echo (!empty($new_password_confirm_err)) ? 'is-invalid' : ''; ?>">
+                <input type="password" name="new_password_confirm" class="form-control <?php echo (!empty($new_password_confirm_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $new_password_confirm; ?>">
                 <span class="invalid-feedback"><?php echo $new_password_confirm_err; ?></span>
             </div>
             <div class="form-group">
                 <input type="submit" class="btn btn-primary" value="Modifier le mot de passe">
+            </div>
+        </form>
+        <h3>Modifier mes informations personnelles</h3>
+        <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
+            <input type="hidden" name="action" value="changing_personnal_infos">
+            <div class="form-group">
+                <label>Nom</label>
+                <input type="text" name="name" value="<?php echo $name; ?>">
+                <label>Prénom</label>
+                <input type="text" name="firstname" value="<?php echo $firstname; ?>">
+                <label>Mail</label>
+                <input type="text" name="mail" class="form-control <?php echo (!empty($mail_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $mail; ?>">
+                <span class="invalid_feedback"><?php echo $mail_err; ?></span>
+
+                <label>Femme</label>
+				<input type="radio" name="sex" value="woman">
+				<label>Homme</label>
+				<input type="radio" name="sex" value="man">
+				<label>Autre</label>
+				<input type="radio" name="sex" value="other" checked="checked">
+
+                <h4>Adresse</h4>
+                <label>Numéro de Rue</label>
+                <input type="number" name="num_rue" value="<?php echo $num_rue; ?>">
+                <label>Nom de rue</label>
+                <input type="text" name="nom_rue" value="<?php echo $nom_rue; ?>">
+                <label>Ville</label>
+                <input type="text" name="ville" value="<?php echo $ville; ?>">
+                <label>Code Postal<label>
+                <input type="number" name="code_postal" value="<?php echo $code_postal; ?>">
+                <span class="invalid_feedback"><?php echo $address_err; ?></span>
+
+            </div>
+            <div class="form-group">
+                <input type="submit" class="btn btn-primary" value="Modifier mes informations">
             </div>
         </form>
         </br>

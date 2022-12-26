@@ -93,10 +93,11 @@
 	}
 
 	function update_password($link,$password){
-		$sql = "UPDATE UTILISATEUR SET mdp = ?;";
+		$sql = "UPDATE UTILISATEUR SET mdp = ? WHERE id_utilisateur = ?;";
 		if($stmt = mysqli_prepare($link, $sql)){
-			mysqli_stmt_bind_param($stmt,"s",$param_password);
-			$param_password = password_hash($password,  PASSWORD_DEFAULT);
+			mysqli_stmt_bind_param($stmt,"si",$param_password,$param_id_utilisateur);
+			$param_id_utilisateur = $_SESSION["id"];
+			$param_password = password_hash($password,PASSWORD_DEFAULT);
 			if(mysqli_stmt_execute($stmt)){
 				// Do confirm stuff...
 				// echo "password modified !";
@@ -108,17 +109,18 @@
 		}
 	}
 
-	function update_id($link, $id){
-		$sql = "UPDATE UTILISATEUR SET pseudo = ?;";
+	function update_id($link, $pseudo){
+		$sql = "UPDATE UTILISATEUR SET pseudo = ? WHERE id_utilisateur = ?;";
 		if($stmt = mysqli_prepare($link, $sql)){
-			mysqli_stmt_bind_param($stmt,"s",$param_id);
-			$param_id = $id;
+			mysqli_stmt_bind_param($stmt,"si",$param_pseudo,$param_id_utilisateur);
+			$param_id_utilisateur = $_SESSION["id"];
+			$param_pseudo = $pseudo;
 			if(mysqli_stmt_execute($stmt)){
 				// Do confirm stuff...
 				// echo "username modified !";
 
 				// Changing user session
-				$SESSION["username"] = $id;
+				$SESSION["username"] = $pseudo;
 
 			} else {
 				echo "Oops! Something went wrong. Please try again later.";
@@ -126,6 +128,70 @@
 		} else {
 			echo "[ERROR] - ".$link->error;
 		}
+	}
+
+	function update_personnal_infos($link,$info_array){
+		$id = $_SESSION["id"];
+		$sql = "SELECT nom,prenom,mail,sexe,num_rue,nom_rue,ville,code_postal FROM UTILISATEUR WHERE id_utilisateur=$id;";
+		$result = query($link, $sql);
+		if(!(mysqli_num_rows($result) == 0)){
+			$index = mysqli_fetch_array($result,MYSQLI_ASSOC);
+
+			$sql = "UPDATE UTILISATEUR SET nom = ?,prenom = ?,mail = ?,sexe = ?,num_rue = ?,nom_rue = ?,ville = ?,code_postal = ? WHERE id_utilisateur=$id;";
+			$stmt = mysqli_prepare($link, $sql);
+			mysqli_stmt_bind_param($stmt, "ssssissi",$name_param, $firstname_param, $mail_param, $sex_param, $num_rue_param, $nom_rue_param, $ville_param,$code_postal_param);
+			// Name
+			if(!empty($info_array["name"])){
+				$name_param = $info_array["name"];
+			} else {
+				$name_param = $index["name"];
+			}
+			// Firstname
+			if(!empty($info_array["firstname"])){
+				$firstname_param = $info_array["firstname"];
+			} else {
+				$firstname_param = $index["firstname"];
+			}
+
+			// Mail
+			if(!empty($info_array["mail"])){
+				$mail_param = $info_array["mail"];
+			} else {
+				$mail_param = $index["mail"];
+			}
+
+			// Sex
+			if(!empty($info_array["sex"])){
+				$sex_param = $info_array["sex"];
+			} else {
+				$sex_param = $index["sexe"];
+			}
+
+			// Address
+			if(!empty($info_array["num_rue"]) && !empty($info_array["nom_rue"]) && !empty($info_array["ville"]) && !empty($info_array["code_postal"])){
+				$num_rue_param = $info_array["num_rue"];
+				$nom_rue_param = $info_array["nom_rue"];
+				$ville_param = $info_array["ville"];
+				$code_postal_param = $info_array["code_postal"];
+			} else {
+				$num_rue_param = $index["num_rue"];
+				$nom_rue_param = $index["nom_rue"];
+				$ville_param = $index["ville"];
+				$code_postal_param = $index["code_postal"];
+			}
+			// Attempt to execute the prepared statement
+			if (mysqli_stmt_execute($stmt)) {
+				// Do confirm stuff ...
+				echo "Changes applied successfully !";
+			} else {
+				echo "Oops! Something went wrong. Please try again later.";
+				echo "[ERROR] - " . $link->error;
+			}
+			mysqli_stmt_close($stmt);
+		} else {
+			echo "Oops! Something went wrong. Please try again later.";
+		}
+		mysqli_free_result($result);
 	}
 
 	function checkIfReciepeInBasket($id_reciepe, $id_user){
@@ -136,6 +202,7 @@
 			$query = "SELECT id_utilisateur FROM PANIER WHERE (id_utilisateur='$id_user' AND id_recette='$id_reciepe');";
 			$result = mysqli_query($link, $query);
 			$checkrows = mysqli_num_rows($result);
+			mysqli_free_result($result);
 			mysqli_close($link);
 
 			return !($checkrows==0);

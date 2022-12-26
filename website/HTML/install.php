@@ -56,7 +56,12 @@
 				mdp VARCHAR(255),
 				nom VARCHAR(255),
 				prenom VARCHAR(255),
-				mail VARCHAR(255)
+				mail VARCHAR(255),
+				sexe VARCHAR(10),
+				num_rue INT,
+				nom_rue VARCHAR(255),
+				ville VARCHAR(255),
+				code_postal INT
 			);
 			CREATE TABLE PANIER(
 				id_utilisateur INT,
@@ -143,7 +148,7 @@
 		// -- TEST user -- //
 		// -> User
 		$password = password_hash("password", PASSWORD_DEFAULT);
-		$Sql = "INSERT INTO UTILISATEUR (pseudo,mdp,nom,prenom,mail) VALUES ('testuser','$password','test','user','test@gmail.com');";
+		$Sql = "INSERT INTO UTILISATEUR (pseudo,mdp,nom,prenom,mail,sexe,num_rue,nom_rue,ville,code_postal) VALUES ('testuser','$password','test','user','test@gmail.com','unknown','19','rue du Morvan','Nancy','54000');";
 		query($link,$Sql);
 		// -> Panier
 		for($i=1; $i<=10; $i++){
