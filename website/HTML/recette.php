@@ -6,6 +6,17 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width,initial-scale=1.0">
 	<link rel="stylesheet" type="text/css" href="Style/style.css?v=1">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<script>
+		$(function() {
+			$("#tags").autocomplete({
+				source: "liste_interet.php",
+				minLength: 1
+			});
+		});
+	</script>
 	<?php require "helper.php";
 	// Initialize the session
 	session_start();
@@ -42,7 +53,7 @@
 			</a>
 			<div class="searchbar">
 				<form method="POST" action="search.php">
-					<input type="text" name="q" placeholder="Rechercher...">
+					<input type="text" id="tags" name="q" placeholder="Rechercher...">
 					<button type="submit">
 						<img src="./ressources/Img/icons/search.png" alt="Rechercher">
 					</button>
