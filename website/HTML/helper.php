@@ -1,4 +1,3 @@
-
 <?php
 	$base="BDD_marmiton";
     global $base;
@@ -67,7 +66,10 @@
     }
 
 	function connectToDatabase(){
-        $link = mysqli_connect('127.0.0.1', 'root', '') or die("Erreur de connexion");
+		$ip = '127.0.0.1';
+		$username = 'root';
+		$password = '';
+        $link = mysqli_connect($ip, $username, $password) or die("Erreur de connexion");
 		$link->set_charset("utf8mb4");
         return $link;
 	}
@@ -290,14 +292,12 @@
 	}
 
 	function queryAllReciepieFromElementID($link,$id_element){
-		$sql = "SELECT r.*
+		$sql = "SELECT DISTINCT r.*
 		FROM RECETTES r
 		JOIN RECETTECONTIENTINGREDIENT rci ON r.id_recette = rci.id_recette
 		JOIN INGREDIENTS i ON rci.id_ingredient = i.id_ingredient
-		JOIN ELEMENTCATEGORIE ec ON i.id_ingredient = ec.id_element
-		JOIN SUPERCATEGORIE sc ON ec.id_element = sc.id_elementsupercategorie
-		JOIN SOUSCATEGORIE ss ON ec.id_element = ss.id_elementsouscategorie
-		WHERE sc.id_elementsupercategorie = $id_element OR ss.id_elementsouscategorie = $id_element;";
+		JOIN ELEMENTCATEGORIE ec ON i.nom_ingredient LIKE ec.nom_element
+		JOIN SOUSCATEGORIE ss ON ec.id_element = ss.id_element
+		WHERE ss.id_element = $id_element OR ss.id_elementsouscategorie = $id_element;";
 		return query($link,$sql);
 	}
-?>

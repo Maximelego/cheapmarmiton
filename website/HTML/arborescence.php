@@ -6,6 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="stylesheet" type="text/css" href="Style/style.css?v=1.1">
+    <?php require "helper.php"; ?>
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
@@ -17,7 +18,6 @@
             });
         });
     </script>
-    <?php require "helper.php"; ?>
 </head>
 
 <body>
@@ -86,16 +86,23 @@
                 $link = connectToDatabase();
                 query($link, "USE $base");
                 if (!isset($_GET["current_element_id"]) || empty($_GET["current_element_id"])) {
+                    $count = 0;
                     $result = query($link, "SELECT * FROM RECETTES");
                     while ($index = mysqli_fetch_array($result)) {
                         displayReciepeList(scanTitle($index[1]), $index[0], $index[1]);
+                        $count++;
                     }
                 } else {
+                    $count = 0;
                     $element_id = $_GET["current_element_id"];
                     $result = queryAllReciepieFromElementID($link, $element_id);
                     while ($index = mysqli_fetch_array($result)) {
                         displayReciepeList(scanTitle($index[1]), $index[0], $index[1]);
+                        $count++;
                     }
+                }
+                if ($count == 0) {
+                    echo "<h1>Aucun résultat trouvé</h1>";
                 }
                 ?>
             </div>
