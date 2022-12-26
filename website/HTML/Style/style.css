@@ -131,6 +131,8 @@ img{
     grid-gap: 32px;
     justify-content: center;
     align-items: center;
+    text-align: center;
+    margin: auto;
     margin-left: 10%;
     margin-right: 10%;
 }
@@ -140,15 +142,24 @@ img{
     margin-top: 10px;
     padding: 10px;
     font-size: 100%;
-    align-self: center;
-    justify-self: center;
-    justify-content: center;
+    width: 300px;
+    height: 300px;
+
+
     background-color: rgb(199, 199, 199);
+
 }
 .box h2{
-    width: 300px;
-    height: 50px;
+    padding-top: 5px;
+    margin: auto;
+    text-align: center;
+    font-size: 15px;
 }
+.box img{
+    margin-top: 30px;
+        
+}
+
 
 h1 {
     font-size: 4rem;
@@ -194,6 +205,42 @@ h1 {
 
 }
 
+
+.left-region {
+    float: left;
+    width: 30%;
+    padding: 20px;
+  }
+  .left-region ul { 
+    background-color: #F8F8F8; /* met la couleur de fond de la liste en gris clair */
+ }
+ .left-region ul li { 
+    border: 1px solid #CCCCCC; /* ajoute une bordure grise autour de chaque élément de la liste */
+ }
+
+ .left-region ul li { 
+    color: #333333; /* met la couleur de police en noir */
+ }
+ .left-region ul li { 
+    margin: 10px; /* ajoute une marge de 10 pixels autour de chaque élément de la liste */
+ }
+
+ .left-region ul li { 
+    font-family: Arial, sans-serif; /* utilise la police Arial pour les éléments de la liste */
+ }
+ 
+  
+  .right-region {
+    float: right;
+    width: 70%;
+    padding: 20px;
+  }
+  
+  .wrapper {
+    overflow: hidden;
+  }
+
+
 .gender{
     display: flex;
     justify-content: center;
@@ -207,5 +254,19 @@ h1 {
     margin: auto;
 }
 
-
+a.button {
+    display: inline-block;
+    background-color: rgb(255, 145, 0);
+    color: white;
+    padding: 15px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-top: 10px;
+    margin-left: 10px;
+  }
+  
+  a.button:hover {
+    background-color: lightblue;
+  }
 

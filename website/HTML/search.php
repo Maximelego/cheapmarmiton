@@ -62,25 +62,13 @@
     // Connexion à la base de données
     $conn = connectToDatabase();
     query($conn, "USE $base;");
-    $string = $_POST["q"];
-    $sql = "SELECT * FROM RECETTES WHERE titre LIKE %$string% OR ingredients LIKE %string%;";
 
-    //     $stringCompiled = "";
-    // foreach (explode(" ", $_POST["q"]) as $string) {
-    //     $search_query = transformStringToSQLCompatible($conn, $string);
-    //     if ($count != 0) {
-    //         $sql .= " OR ";
-    //         $stringCompiled .= ", " . $string;
-    //     } else {
-    //         $stringCompiled .= $string;
-    //     }
-    //     $sql .= "titre LIKE '%$search_query%' OR ingredients LIKE '%$search_query%'";
-    //     $count++;
-    // }
-    // $sql .= ";";
+    // Récupérez la chaîne de recherche à partir des données POST et protégez-la contre les injections SQL 
+    // (Il y a déjà une fonction pour ça dans helper.php)
+    $search_query = transformStringToSQLCompatible($conn, $_POST['q']);
 
-    //echo "$sql";
-
+    // Créez une requête SQL pour récupérer les données de la base de données qui correspondent à la chaîne de recherche
+    $sql = "SELECT * FROM RECETTES WHERE titre LIKE '%$search_query%' OR ingredients LIKE '%$search_query%'";
     $result = mysqli_query($conn, $sql);
 
     if ($result) {
