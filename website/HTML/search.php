@@ -62,7 +62,6 @@
     // Connexion à la base de données
     $conn = connectToDatabase();
     query($conn, "USE $base;");
-    $count = 0;
     $string = $_POST["q"];
     $sql = "SELECT * FROM RECETTES WHERE titre LIKE %$string% OR ingredients LIKE %string%;";
 
