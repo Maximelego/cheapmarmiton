@@ -71,7 +71,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if(!empty($mail)){
         // Checking if the mail doesn't already exist
         $sql = "SELECT * FROM UTILISATEUR WHERE mail='". transformStringToSQLCompatible($link,$mail) ."';";
-        query($link,$sql);
+        $result = query($link,$sql);
         $checkrows = mysqli_num_rows($result);
         if($checkrows != 0){
             $mail_err = "Cette adresse mail est déjà utilisée.";
