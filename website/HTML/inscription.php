@@ -66,28 +66,28 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	}
 
 	$name = trim($_POST["name"]);
-    $firstname = trim($_POST["firstname"]);
-    $mail = trim($_POST["mail"]);
-    if(!empty($mail)){
-        // Checking if the mail doesn't already exist
-        $sql = "SELECT * FROM UTILISATEUR WHERE mail='". transformStringToSQLCompatible($link,$mail) ."';";
-        $result = query($link,$sql);
-        $checkrows = mysqli_num_rows($result);
-        if($checkrows != 0){
-            $mail_err = "Cette adresse mail est déjà utilisée.";
-        }
-    }
-	
-    $sexe = trim($_POST["sex"]);
+	$firstname = trim($_POST["firstname"]);
+	$mail = trim($_POST["mail"]);
+	if (!empty($mail)) {
+		// Checking if the mail doesn't already exist
+		$sql = "SELECT * FROM UTILISATEUR WHERE mail='" . transformStringToSQLCompatible($link, $mail) . "';";
+		$result = query($link, $sql);
+		$checkrows = mysqli_num_rows($result);
+		if ($checkrows != 0) {
+			$mail_err = "Cette adresse mail est déjà utilisée.";
+		}
+	}
 
-    // Validate address
-    $num_rue = trim($_POST["num_rue"]);
-    $nom_rue = trim($_POST["nom_rue"]);
-    $ville = trim($_POST["ville"]);
-    $code_postal = trim($_POST["code_postal"]);
-    if((empty($num_rue) || empty($nom_rue) || empty($ville) || empty($code_postal)) && !(empty($num_rue) && empty($nom_rue) && empty($ville) && empty($code_postal))){
-        $address_err = "Veuillez saisir une adresse complète.";
-    }
+	$sexe = trim($_POST["sex"]);
+
+	// Validate address
+	$num_rue = trim($_POST["num_rue"]);
+	$nom_rue = trim($_POST["nom_rue"]);
+	$ville = trim($_POST["ville"]);
+	$code_postal = trim($_POST["code_postal"]);
+	if ((empty($num_rue) || empty($nom_rue) || empty($ville) || empty($code_postal)) && !(empty($num_rue) && empty($nom_rue) && empty($ville) && empty($code_postal))) {
+		$address_err = "Veuillez saisir une adresse complète.";
+	}
 
 	// Check input errors before inserting in database
 	if (empty($username_err) && empty($password_err) && empty($confirm_password_err) && empty($mail_err)) {
@@ -182,34 +182,84 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		<p>Veuillez remplir ce formulaire afin de créer un compte.</p>
 		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 			<div class="form-group">
-				<label>Nom d'utilisateur</label>
-				<input type="text" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+				<div class="container">
+					<!-- Contenu de la première colonne -->
+					<div class="column">
+						<label>Nom d'utilisateur</label>
+					</div>
+					<!-- Contenu de la seconde colonne -->
+					<div class="column">
+						<input type="text" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+					</div>
+				</div>
 				<span class="invalid-feedback"><?php echo $username_err; ?></span>
 			</div>
 			<div class="form-group">
-				<label>Adresse mail</label>
-				<input type="text" name="mail" class="form-control <?php echo (!empty($mail_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $mail; ?>">
+
+				<div class="container">
+					<!-- Contenu de la première colonne -->
+					<div class="column">
+						<label>Adresse mail</label>
+					</div>
+					<!-- Contenu de la seconde colonne -->
+					<div class="column">
+						<input type="text" name="mail" class="form-control <?php echo (!empty($mail_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $mail; ?>">
+					</div>
+				</div>
 				<span class="invalid-feedback"><?php echo $mail_err; ?></span>
 			</div>
 			<div class="form-group">
-				<label>Mot de passe</label>
-				<input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
+				<div class="container">
+					<!-- Contenu de la première colonne -->
+					<div class="column">
+						<label>Mot de passe</label>
+					</div>
+					<!-- Contenu de la seconde colonne -->
+					<div class="column">
+						<input type="password" name="password" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $password; ?>">
+					</div>
+				</div>
 				<span class="invalid-feedback"><?php echo $password_err; ?></span>
 			</div>
 			<div class="form-group">
-				<label>Confirmation du mot de passe</label>
-				<input type="password" name="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
+				<div class="container">
+					<!-- Contenu de la première colonne -->
+					<div class="column">
+						<label>Confirmation du mot de passe</label>
+					</div>
+					<!-- Contenu de la seconde colonne -->
+					<div class="column">
+						<input type="password" name="confirm_password" class="form-control <?php echo (!empty($confirm_password_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $confirm_password; ?>">
+					</div>
+				</div>
 				<span class="invalid-feedback"><?php echo $confirm_password_err; ?></span>
 			</div>
 			<div class="form-group">
-				<label>Nom</label>
-				<input type="text" name="name" value="<?php echo $name; ?>">
+				<div class="container">
+					<!-- Contenu de la première colonne -->
+					<div class="column">
+						<label>Nom</label>
+					</div>
+					<!-- Contenu de la seconde colonne -->
+					<div class="column">
+						<input type="text" name="name" value="<?php echo $name; ?>">
+					</div>
+				</div>
+
 			</div>
 			<div class="form-group">
-				<label>Prénom</label>
-				<input type="text" name="firstname" value="<?php echo $firstname; ?>">
+				<div class="container">
+					<!-- Contenu de la première colonne -->
+					<div class="column">
+						<label>Prénom</label>
+					</div>
+					<!-- Contenu de la seconde colonne -->
+					<div class="column">
+						<input type="text" name="firstname" value="<?php echo $firstname; ?>">
+					</div>
+				</div>
 			</div>
-			<div class="form-group">
+			<div class="gender">
 				<label>Femme</label>
 				<input type="radio" name="sex" value="woman">
 				<label>Homme</label>
@@ -217,15 +267,52 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 				<label>Autre</label>
 				<input type="radio" name="sex" value="other" checked="checked">
 			</div>
-			<div class="form-group">
-				<label>Numéro de rue</label>
-				<input type="number" name="num_rue" value="<?php echo $num_rue; ?>">
-				<label>Nom de la rue</label>
-				<input type="text" name="nom_rue" value="<?php echo $nom_rue;?>">
-				<label>Ville</label>
-				<input type="text" name="ville" value="<?php echo $ville; ?>">
-				<label>Code Postal</label>
-				<input type="number" name="code_postal" value="<?php echo $code_postal; ?>">
+			<div class="adr">
+				<div class="container">
+					<!-- Contenu de la première colonne -->
+					<div class="column">
+						<label>Numéro de rue</label>
+					</div>
+
+					<!-- Contenu de la seconde colonne -->
+					<div class="column">
+						<input type="number" name="num_rue" value="<?php echo $num_rue; ?>">
+					</div>
+				</div>
+				<div class="container">
+					<!-- Contenu de la première colonne -->
+					<div class="column">
+						<label>Nom de la rue</label>
+					</div>
+
+					<!-- Contenu de la seconde colonne -->
+					<div class="column">
+						<input type="text" name="nom_rue" value="<?php echo $nom_rue; ?>">
+					</div>
+				</div>
+				<div class="container">
+					<!-- Contenu de la première colonne -->
+					<div class="column">
+						<label>Ville</label>
+					</div>
+
+					<!-- Contenu de la seconde colonne -->
+					<div class="column">
+						<input type="text" name="ville" value="<?php echo $ville; ?>">
+					</div>
+				</div>
+				<div class="container">
+					<!-- Contenu de la première colonne -->
+					<div class="column">
+						<label>Code Postal</label>
+					</div>
+
+					<!-- Contenu de la seconde colonne -->
+					<div class="column">
+						<input type="number" name="code_postal" value="<?php echo $code_postal; ?>">
+					</div>
+				</div>
+
 				<span class="invalid-feedback"><?php echo $address_err; ?></span>
 			</div>
 			<div class="form-group">

@@ -126,7 +126,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 					echo "<li><a href=\"connexion.php\"><img src=\"./ressources/Img/icons/login.png\" alt=\"login\" style=\"width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:3px\" />Se connecter</a> </li>";
 				} else {
 					echo "<li><a href=\"moncompte.php\"><img src=\"./ressources/Img/icons/login.png\" alt=\"login\" style=\"width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:3px\" />Mon compte</a> </li>";
-				}?>
+				} ?>
 				<li><a href="favoris.php"><img src="./ressources/Img/icons/favoris.png" alt="favoris" style="width:30px;height:30px;padding-left:-15px;margin-right: 7px;vertical-align:middle;margin-bottom:10px" />Mes favoris</a> </li>
 			</ul>
 		</nav>
@@ -136,13 +136,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 		<h1>Connexion</h1>
 		<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" method="post">
 			<div class="form-group">
-				<label>Nom d'utilisateur</label>
-				<input type="text" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+				<div class="container">
+					<!-- Contenu de la première colonne -->
+					<div class="column">
+						<label>Nom d'utilisateur</label>
+					</div>
+
+					<!-- Contenu de la seconde colonne -->
+					<div class="column">
+						<input type="text" name="username" class="form-control <?php echo (!empty($username_err)) ? 'is-invalid' : ''; ?>" value="<?php echo $username; ?>">
+					</div>
+				</div>
+
 				<span class="invalid-feedback"><?php echo $username_err; ?></span>
 			</div>
 			<div class="form-group">
-				<label>Mot de passe</label>
-				<input type="password" name="mdp" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
+
+				<div class="container">
+					<!-- Contenu de la première colonne -->
+					<div class="column">
+						<label>Mot de passe</label>
+					</div>
+
+					<!-- Contenu de la seconde colonne -->
+					<div class="column">
+						<input type="password" name="mdp" class="form-control <?php echo (!empty($password_err)) ? 'is-invalid' : ''; ?>">
+					</div>
+				</div>
+
 				<span class="invalid-feedback"><?php echo $password_err; ?></span>
 			</div>
 			<div class="form-group">

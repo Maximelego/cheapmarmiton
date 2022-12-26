@@ -53,7 +53,7 @@
 
 		while ($index = mysqli_fetch_row($result)) {
 			$image_name = scanTitle($index[1]);
-			if(file_exists("./ressources/Photos/$image_name.jpg")){
+			if (file_exists("./ressources/Photos/$image_name.jpg")) {
 				displayReciepeList($image_name, $index[0], $index[1]);
 			}
 		}

@@ -117,6 +117,14 @@ img{
 }
 
 
+.left-region{
+ width:20%;
+}
+.right-region{
+  width:80%;
+}
+	
+
 .wrapper {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px,1fr));
@@ -157,17 +165,47 @@ h1 {
     margin-left: 25%;
     margin-right: 25%;
     padding: 2%;
+    font-size: 20px;
 
     background-color: #F7CE68;
     border-color: #2b2b2b;
     border-radius: 20px;
     border-style: solid;
     border-width: 3px;
+
 }
 
+.container {
+    display: flex;
+  }
+  
+  .column {
+    width: 50%;
+  }
 
+.formulaire input{
+    border-radius: 5px;
+  margin-top: 1%;
+  margin-bottom: 1%;
+  display: flex;
+  
+  margin: auto;
+  margin-bottom: 10px;
 
+}
 
+.gender{
+    display: flex;
+    justify-content: center;
+    margin: 0 120px;
+}
+
+.column0 {
+    margin: auto;
+  }
+.column1 {
+    margin: auto;
+}
 
 
 
