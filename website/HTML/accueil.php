@@ -56,7 +56,7 @@
 		</nav>
 	</header>
 
-	<a href="arborescence.php" class="button">Naviguer et découvrez plus de cocktails !!!</a>
+	<a href="arborescence.php" class="button">Naviguez et découvrez plus de cocktails !</a>
 
 	<h1>Nos meilleurs cocktails</h1>
 	<div class="wrapper">

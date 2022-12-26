@@ -188,6 +188,7 @@ h1 {
 
 .container {
     display: flex;
+    padding: 0 20px;
   }
   
   .column {
@@ -247,11 +248,17 @@ h1 {
     margin: 0 120px;
 }
 
+
 .column0 {
-    margin: auto;
+    float: right;
+    width: 70%;
+    padding: 20px;
+
   }
 .column1 {
-    margin: auto;
+    float: left;
+    width: 30%;
+    padding: 20px;
 }
 
 a.button {
@@ -270,3 +277,21 @@ a.button {
     background-color: lightblue;
   }
 
+  .column {
+    display: block;
+    margin-bottom: 1em; /* augmente l'interligne de 1em entre chaque élément de formulaire */
+  }
+  .formulaire p {
+    margin-bottom: 1em; /* augmente l'interligne de 1em entre le paragraphe et le label suivant */
+  }
+  .formulaire input[type="radio"] {
+    margin-bottom: 3em; /* augmente l'interligne de 1em entre les options de genre et le label suivant */
+  }
+
+  .column0 h2 {
+    margin-bottom: 1em; /* augmente l'interligne de 1em entre l'en-tête "Ingrédients :" et la liste d'ingrédients qui suit */
+  }
+
+  .column0 h2 {
+    margin-bottom: 1em; /* augmente l'interligne de 1em entre l'en-tête "Recette :" et le texte qui suit */
+  }
