@@ -277,4 +277,27 @@
 		echo "</div>";
 	}
 
+	function requestAllSubElements($link,$id_element){
+		$sql = "SELECT id_element,nom_element
+		FROM ELEMENTCATEGORIE
+		WHERE id_element IN (
+			SELECT id_elementsouscategorie
+			FROM SOUSCATEGORIE
+			WHERE id_element=$id_element
+		);";
+
+		return query($link,$sql);
+	}
+
+	function queryAllReciepieFromElementID($link,$id_element){
+		$sql = "SELECT r.*
+		FROM RECETTES r
+		JOIN RECETTECONTIENTINGREDIENT rci ON r.id_recette = rci.id_recette
+		JOIN INGREDIENTS i ON rci.id_ingredient = i.id_ingredient
+		JOIN ELEMENTCATEGORIE ec ON i.id_ingredient = ec.id_element
+		JOIN SUPERCATEGORIE sc ON ec.id_element = sc.id_elementsupercategorie
+		JOIN SOUSCATEGORIE ss ON ec.id_element = ss.id_elementsouscategorie
+		WHERE sc.id_elementsupercategorie = $id_element OR ss.id_elementsouscategorie = $id_element;";
+		return query($link,$sql);
+	}
 ?>

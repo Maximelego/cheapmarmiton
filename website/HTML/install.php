@@ -68,7 +68,15 @@
 				id_recette INT,
 				FOREIGN KEY (id_utilisateur) REFERENCES UTILISATEUR(id_utilisateur),
 				FOREIGN KEY (id_recette) REFERENCES RECETTES(id_recette)
-			);";
+			);
+			CREATE VIEW SelectRoot AS 
+				SELECT id_element,nom_element 
+				FROM ELEMENTCATEGORIE
+				WHERE id_element NOT IN (
+					SELECT id_element
+					FROM SUPERCATEGORIE
+					WHERE id_elementsupercategorie != 34
+				) AND nom_element != 'Aliment';";
 
 		//DEBUG
 		//echo $Sql."</br>";
