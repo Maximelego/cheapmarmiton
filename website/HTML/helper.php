@@ -1,6 +1,10 @@
 <?php
 	$base="BDD_marmiton";
-    global $base;
+	$ip = '127.0.0.1';
+	$username = 'root';
+	$password = '';
+    global $base,$ip,$username,$password;
+
 
 	function collectObjectID($link, $object, $table){
 		if(!checkIfElementExists($link, $object, $table)){
@@ -66,9 +70,9 @@
     }
 
 	function connectToDatabase(){
-		$ip = '127.0.0.1';
-		$username = 'root';
-		$password = '';
+		$ip = $GLOBALS["ip"];
+		$username = $GLOBALS["username"];
+		$password = $GLOBALS["password"];
         $link = mysqli_connect($ip, $username, $password) or die("Erreur de connexion");
 		$link->set_charset("utf8mb4");
         return $link;

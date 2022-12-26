@@ -1,10 +1,14 @@
 <?php
 // debut session
+require "helper.php";
 session_start();
 
 //connexion a la bdd
 try {
-    $bdd = new PDO('mysql:host=localhost;dbname=bdd_marmiton;charset=utf8', 'root', '', array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+    $ip = $GLOBALS["ip"];
+    $username = $GLOBALS["username"];
+    $password = $GLOBALS["password"];
+    $bdd = new PDO("mysql:host=$ip;dbname=bdd_marmiton;charset=utf8", $username, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 } catch (Exception $e) {
     die('Erreur : ' . $e->getMessage());
 }
