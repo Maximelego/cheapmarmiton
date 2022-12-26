@@ -75,16 +75,23 @@
                 $link = connectToDatabase();
                 query($link, "USE $base");
                 if (!isset($_GET["current_element_id"]) || empty($_GET["current_element_id"])) {
+                    $count = 0;
                     $result = query($link, "SELECT * FROM RECETTES");
                     while ($index = mysqli_fetch_array($result)) {
                         displayReciepeList(scanTitle($index[1]), $index[0], $index[1]);
+                        $count++;
                     }
                 } else {
+                    $count = 0;
                     $element_id = $_GET["current_element_id"];
                     $result = queryAllReciepieFromElementID($link, $element_id);
                     while ($index = mysqli_fetch_array($result)) {
                         displayReciepeList(scanTitle($index[1]), $index[0], $index[1]);
+                        $count++;
                     }
+                }
+                if($count==0){
+                    echo "<h1>Aucun résultat trouvé</h1>";
                 }
                 ?>
             </div>
