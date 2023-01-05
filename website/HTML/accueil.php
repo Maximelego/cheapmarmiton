@@ -16,6 +16,7 @@
 				source: "liste_interet.php",
 				minLength: 1
 			});
+			$('input[name=q]').attr('autocomplete','on');
 		});
 	</script>
 

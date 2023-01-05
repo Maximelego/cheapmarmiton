@@ -1,8 +1,8 @@
 <?php
 	$base="BDD_marmiton";
 	$ip = '127.0.0.1';
-	$username = 'root';
-	$password = '';
+	$username = 'admin';
+	$password = 'TUw9gkYjUQ6v7693';
     global $base,$ip,$username,$password;
 
 

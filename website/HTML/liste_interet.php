@@ -8,16 +8,16 @@ try {
     $ip = $GLOBALS["ip"];
     $username = $GLOBALS["username"];
     $password = $GLOBALS["password"];
-    $bdd = new PDO("mysql:host=$ip;dbname=bdd_marmiton;charset=utf8", $username, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
+    $bdd = new PDO("mysql:host=$ip;dbname=BDD_marmiton;charset=utf8", $username, $password, array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION));
 } catch (Exception $e) {
-    die('Erreur : ' . $e->getMessage());
+    echo $e->getMessage();
 }
 
 
 $term = $_GET['term'];
 
-$requete = $bdd->prepare('SELECT * FROM recettes WHERE titre LIKE :term'); // j'effectue ma requête SQL grâce au mot-clé LIKE
-$requete->execute(array('term' => '%' . $term . '%'));
+$requete = $bdd->prepare('SELECT * FROM RECETTES WHERE titre LIKE :term'); // j'effectue ma requête SQL grâce au mot-clé LIKE
+$requete->execute(array('term' => '%' . $term . '%')); // <- caca
 
 $array = array(); // on créé le tableau
 
